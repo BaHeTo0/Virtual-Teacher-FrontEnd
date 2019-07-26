@@ -2,6 +2,8 @@ import React from 'react'
 import { Button, FormGroup, FormControl, FormLabel } from 'react-bootstrap'
 import './SignUp.css'
 import axios from 'axios'
+import DatePicker from 'react-datepicker'
+import "react-datepicker/dist/react-datepicker.css"
 
 class SignUp extends React.Component {
 
@@ -10,7 +12,8 @@ class SignUp extends React.Component {
         password:"",
         confirmPass:"",
         firstName:"",
-        lastName:""
+        lastName:"",
+        date: new Date()
     }
 
     validateForm = () => {
@@ -24,14 +27,20 @@ class SignUp extends React.Component {
         });
     }
 
+    handleDateChange = (event) => {
+        this.setState({
+            date: event
+        });
+    }
+
     handleSubmit = (event) => {
         event.preventDefault();
-        axios.post('http://localhost:8080/api/auth/register', {
+        axios.post('http://10.32.89.31:8080/api/auth/register', {
             email: this.state.email,
             password: this.state.password,
             firstName: this.state.firstName,
             lastName: this.state.lastName,
-            birthDate: "1998-05-06"
+            birthDate: this.state.date
           })
           .then( (response) => {
             console.log(response);
@@ -86,6 +95,12 @@ class SignUp extends React.Component {
                             onChange={this.handleChange}
                         />
                     </FormGroup>
+                    <DatePicker 
+                        id="date"
+                        selected={this.state.date} 
+                        onChange={this.handleDateChange} 
+                        dateFormat="yyyy-MM-dd"
+                    />
                     <Button 
                         block
                         bssize="large"
