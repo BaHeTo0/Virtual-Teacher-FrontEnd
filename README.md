@@ -1,1 +1,0 @@
-The frontend for our final project
