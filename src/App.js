@@ -1,24 +1,25 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import NavBarContainer from './containers/NavBarContainer/NavBarContainer';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import 'bootstrap-css-only/css/bootstrap.min.css';
+import 'mdbreact/dist/css/mdb.css';
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import HomeContainer from './containers/HomeContainer/HomeContainer';
+import CoursesContainer from './containers/CoursesContainer/CoursesContainer';
+import FooterContainer from './containers/FooterContainer/FooterContainer';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <BrowserRouter>
+        <NavBarContainer></NavBarContainer>
+        <Switch>
+          <Route path="/courses" component={CoursesContainer} />
+          <Route path="/" component={HomeContainer} />
+        </Switch>
+        <FooterContainer></FooterContainer>
+      </BrowserRouter>
     </div>
   );
 }
