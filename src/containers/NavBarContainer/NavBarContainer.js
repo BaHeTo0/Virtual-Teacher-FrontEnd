@@ -17,26 +17,47 @@ import {
   MDBModal,
   MDBModalHeader,
   MDBModalBody,
-  MDBModalFooter,
   MDBInput
 } from "mdbreact";
 import "./NavBarContainer.css";
-
+import axios from "axios";
 
 class NavBarContainer extends Component {
   state = {
+    isAuthenticated: false,
     isOpen: false,
-    loginModal: false
+    loginModal: false,
+    email: "",
+    password: ""
   };
+
+  loginHandler = () => {
+    const data = {
+      email: this.state.email,
+      password: this.state.password
+    };
+    console.log(data);
+    axios
+      .post("http://localhost:8080/api/auth/login", data)
+      .then(response => {
+        this.setState({ isAuthenticated: true });
+        this.toggleLoginModal();
+        console.log(response);
+      })
+      .catch(error => {
+        console.log(error.response);
+      });
+  };
+
+  logoutHandler = () => {
+    this.setState({ isAuthenticated: false });
+  }
 
   submitHandler = event => {
     event.preventDefault();
     event.target.className += " was-validated";
+    this.loginHandler();
   };
-
-  requestLogin = () =>{
-
-  }
 
   toggleCollapse = () => {
     this.setState({ isOpen: !this.state.isOpen });
@@ -48,7 +69,51 @@ class NavBarContainer extends Component {
     });
   };
 
+  changeHandler = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
+
   render() {
+    let authButtons = null;
+
+    if (!this.state.isAuthenticated) {
+      authButtons = (
+        <React.Fragment>
+          <MDBNavItem>
+            <MDBNavLink onClick={this.toggleLoginModal}>
+              <strong>Login</strong>
+            </MDBNavLink>
+          </MDBNavItem>
+          <MDBNavItem>
+            <MDBNavLink to="/register">
+              <strong>Register</strong>
+            </MDBNavLink>
+          </MDBNavItem>
+        </React.Fragment>
+      );
+    }
+
+    let profileButton = null;
+
+    if (this.state.isAuthenticated) {
+      profileButton = (
+        <React.Fragment>
+          <MDBNavItem>
+            <MDBDropdown dropleft>
+              <MDBDropdownToggle nav caret>
+                <strong>Krasen </strong>
+                <MDBIcon icon="user" />
+              </MDBDropdownToggle>
+              <MDBDropdownMenu className="dropdown-default">
+                <MDBDropdownItem href="#!"><strong>My profile</strong></MDBDropdownItem>
+                <MDBDropdownItem onClick={this.logoutHandler}>Log out</MDBDropdownItem>
+              </MDBDropdownMenu>
+            </MDBDropdown>
+          </MDBNavItem>
+        </React.Fragment>
+      );
+    }
+
     return (
       <div className="NavBarContainer">
         <MDBNavbar
@@ -96,28 +161,8 @@ class NavBarContainer extends Component {
               </MDBNavItem>
             </MDBNavbarNav>
             <MDBNavbarNav right>
-              <MDBNavItem>
-                <MDBNavLink onClick={this.toggleLoginModal}>
-                  <strong>Login</strong>
-                </MDBNavLink>
-              </MDBNavItem>
-              <MDBNavItem>
-                <MDBNavLink to="/register">
-                  <strong>Register</strong>
-                </MDBNavLink>
-              </MDBNavItem>
-              <MDBNavItem>
-                <MDBDropdown dropleft>
-                  <MDBDropdownToggle nav caret>
-                    <strong>Krasen </strong>
-                    <MDBIcon icon="user" />
-                  </MDBDropdownToggle>
-                  <MDBDropdownMenu className="dropdown-default">
-                    <MDBDropdownItem href="#!">My profile</MDBDropdownItem>
-                    <MDBDropdownItem href="#!">Log out</MDBDropdownItem>
-                  </MDBDropdownMenu>
-                </MDBDropdown>
-              </MDBNavItem>
+              {authButtons}
+              {profileButton}
             </MDBNavbarNav>
           </MDBCollapse>
         </MDBNavbar>
@@ -157,7 +202,7 @@ class NavBarContainer extends Component {
                   Please provide a valid password
                 </div>
               </MDBInput>
-              <MDBBtn color="secondary" onClick={this.toggleLoginModal}>
+              <MDBBtn color="cyan accent-2" onClick={this.toggleLoginModal}>
                 Close
               </MDBBtn>
               <MDBBtn color="primary" type="submit">
