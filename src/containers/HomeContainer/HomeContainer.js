@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./HomeContainer.css";
-import { MDBContainer, MDBRow, MDBCol, MDBBtn } from "mdbreact";
+import { MDBContainer, MDBRow, MDBCol } from "mdbreact";
 import CourseCardsContainer from "../CourseCardsContainer/CourseCardsContainer";
 
 class HomeContainer extends Component {
@@ -10,10 +10,7 @@ class HomeContainer extends Component {
         <MDBContainer>
           <MDBRow>
             <MDBCol md="8">
-              <MDBBtn
-                onClick={() => this.props.authHandler("isAuthenticated", true)}
-              />
-              <h2>Homepage {this.props.authInfo.authToken}</h2>
+              <h2>Homepage</h2>
               <h5>The user is not logged in</h5>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla

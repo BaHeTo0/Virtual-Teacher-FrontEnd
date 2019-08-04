@@ -30,11 +30,16 @@ class LoginModalComponent extends Component {
       email: this.state.email,
       password: this.state.password
     };
-    console.log(data);
     axios
       .post("http://localhost:8080/api/auth/login", data)
       .then(response => {
         console.log(response);
+        this.props.authHandler("authToken", response.data.token);
+        this.props.authHandler("userId", response.data.id);
+        this.props.authHandler("firstName", response.data.firstName);
+        response.data.roles.forEach(element => {
+          this.props.authHandler(element.name, true);
+        });
         this.setState({ badAuth: false });
       })
       .catch(error => {

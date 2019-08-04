@@ -14,21 +14,33 @@ class App extends Component {
     super(props);
 
     this.authHandler = this.authHandler.bind(this);
+    this.logoutHandler = this.logoutHandler.bind(this);
 
     this.state = {
-      isAuthenticated: null,
-      authToken: null,
-      userId: null,
-      roles: {
-        student: null,
-        teacher: null,
-        admin: null
-      }
+      authToken:
+        localStorage.getItem("authToken") == null
+          ? ""
+          : localStorage.getItem("authToken"),
+      userId: localStorage.getItem("userId"),
+      firstName: localStorage.getItem("firstName"),
+      Student: localStorage.getItem("Student"),
+      Teacher: localStorage.getItem("Teacher"),
+      Admin: localStorage.getItem("Admin")
     };
   }
 
   authHandler = (fieldName, value) => {
-    this.setState({ [fieldName]: [value] });
+    this.setState({ [fieldName]: value });
+    localStorage.setItem(fieldName, value);
+  };
+
+  logoutHandler = () => {
+    this.authHandler("authToken", "");
+    this.authHandler("userId", "");
+    this.authHandler("firstName", "");
+    this.authHandler("Student", false);
+    this.authHandler("Teacher", false);
+    this.authHandler("Admin", false);
   };
 
   render() {
@@ -40,6 +52,7 @@ class App extends Component {
               {...routeProps}
               authInfo={this.state}
               authHandler={this.authHandler}
+              logoutHandler={this.logoutHandler}
             />
           )}
         />
