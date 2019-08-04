@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import './CourseCardsContainer.css';
 import { MDBCol, MDBRow } from 'mdbreact';
-import CourseCardComponent from "../../components/CourseCardComponent";
+import CourseCardComponent from "../../components/CourseCardComponent/CourseCardComponent";
 
 class CourseCardsContainer extends Component {
 

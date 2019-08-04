@@ -14,50 +14,21 @@ import {
   MDBDropdownToggle,
   MDBDropdownMenu,
   MDBDropdownItem,
-  MDBModal,
-  MDBModalHeader,
-  MDBModalBody,
-  MDBInput
 } from "mdbreact";
 import "./NavBarContainer.css";
-import axios from "axios";
+import LoginModalComponent from "../../components/LoginModalComponent/LoginModalComponent";
 
 class NavBarContainer extends Component {
-  state = {
-    isAuthenticated: false,
-    isOpen: false,
-    loginModal: false,
-    email: "",
-    password: ""
-  };
+  constructor(props) {
+    super(props);
 
-  loginHandler = () => {
-    const data = {
-      email: this.state.email,
-      password: this.state.password
+    this.state = {
+      isOpen: false,
+      loginModal: false,
     };
-    console.log(data);
-    axios
-      .post("http://localhost:8080/api/auth/login", data)
-      .then(response => {
-        this.setState({ isAuthenticated: true });
-        this.toggleLoginModal();
-        console.log(response);
-      })
-      .catch(error => {
-        console.log(error.response);
-      });
-  };
-
-  logoutHandler = () => {
-    this.setState({ isAuthenticated: false });
+    
+    this.toggleLoginModal = this.toggleLoginModal.bind(this);
   }
-
-  submitHandler = event => {
-    event.preventDefault();
-    event.target.className += " was-validated";
-    this.loginHandler();
-  };
 
   toggleCollapse = () => {
     this.setState({ isOpen: !this.state.isOpen });
@@ -65,29 +36,28 @@ class NavBarContainer extends Component {
 
   toggleLoginModal = () => {
     this.setState({
-      modal: !this.state.modal
+      loginModal: !this.state.loginModal
     });
-  };
-
-  changeHandler = event => {
-    this.setState({ [event.target.name]: event.target.value });
   };
 
   render() {
     let authButtons = null;
 
-    if (!this.state.isAuthenticated) {
+    if (!this.props.authInfo.isAuthenticated) {
       authButtons = (
         <React.Fragment>
           <MDBNavItem>
-            <MDBNavLink onClick={this.toggleLoginModal}>
-              <strong>Login</strong>
-            </MDBNavLink>
+            <MDBBtn
+              outline
+              onClick={this.toggleLoginModal}
+              color="white"
+              size="sm"
+            >
+              Login
+            </MDBBtn>
           </MDBNavItem>
           <MDBNavItem>
-            <MDBNavLink to="/register">
-              <strong>Register</strong>
-            </MDBNavLink>
+            <MDBBtn size="sm">Register</MDBBtn>
           </MDBNavItem>
         </React.Fragment>
       );
@@ -95,7 +65,7 @@ class NavBarContainer extends Component {
 
     let profileButton = null;
 
-    if (this.state.isAuthenticated) {
+    if (this.props.authInfo.isAuthenticated) {
       profileButton = (
         <React.Fragment>
           <MDBNavItem>
@@ -105,8 +75,12 @@ class NavBarContainer extends Component {
                 <MDBIcon icon="user" />
               </MDBDropdownToggle>
               <MDBDropdownMenu className="dropdown-default">
-                <MDBDropdownItem href="#!"><strong>My profile</strong></MDBDropdownItem>
-                <MDBDropdownItem onClick={this.logoutHandler}>Log out</MDBDropdownItem>
+                <MDBDropdownItem href="#!">
+                  <strong>My profile</strong>
+                </MDBDropdownItem>
+                <MDBDropdownItem onClick={this.logoutHandler}>
+                  Log out
+                </MDBDropdownItem>
               </MDBDropdownMenu>
             </MDBDropdown>
           </MDBNavItem>
@@ -115,103 +89,67 @@ class NavBarContainer extends Component {
     }
 
     return (
-      <div className="NavBarContainer">
-        <MDBNavbar
-          color="blue-gradient"
-          dark
-          expand="md"
-          md-selected-nav-item="homeItem"
-        >
-          <MDBNavbarBrand>
-            <strong>Virtual Teacher</strong>
-          </MDBNavbarBrand>
-          <MDBNavbarToggler onClick={this.toggleCollapse} />
-          <MDBCollapse id="navbarCollapse3" isOpen={this.state.isOpen} navbar>
-            <MDBNavbarNav left>
-              <MDBNavItem>
-                <MDBNavLink to="/">Home</MDBNavLink>
-              </MDBNavItem>
-              <MDBNavItem>
-                <MDBNavLink to="/courses">Courses</MDBNavLink>
-              </MDBNavItem>
-              <MDBNavItem>
-                <MDBDropdown>
-                  <MDBDropdownToggle nav caret>
-                    <span className="mr-2">Topics</span>
-                  </MDBDropdownToggle>
-                  <MDBDropdownMenu>
-                    <MDBDropdownItem href="#!">Business</MDBDropdownItem>
-                    <MDBDropdownItem href="#!">Arts</MDBDropdownItem>
-                    <MDBDropdownItem href="#!">Development</MDBDropdownItem>
-                    <MDBDropdownItem href="#!">Data</MDBDropdownItem>
-                  </MDBDropdownMenu>
-                </MDBDropdown>
-              </MDBNavItem>
-              <MDBNavItem>
-                <MDBFormInline waves>
-                  <div className="md-form my-0">
-                    <input
-                      className="form-control mr-sm-2"
-                      type="text"
-                      placeholder="Search"
-                      aria-label="Search"
-                    />
-                  </div>
-                </MDBFormInline>
-              </MDBNavItem>
-            </MDBNavbarNav>
-            <MDBNavbarNav right>
-              {authButtons}
-              {profileButton}
-            </MDBNavbarNav>
-          </MDBCollapse>
-        </MDBNavbar>
+      console.log(this.props),
+      (
+        <div className="NavBarContainer">
+          <MDBNavbar
+            color="blue-gradient"
+            dark
+            expand="md"
+            md-selected-nav-item="homeItem"
+          >
+            <MDBNavbarBrand>
+              <strong>Virtual Teacher</strong>
+            </MDBNavbarBrand>
+            <MDBNavbarToggler onClick={this.toggleCollapse} />
+            <MDBCollapse id="navbarCollapse3" isOpen={this.state.isOpen} navbar>
+              <MDBNavbarNav left>
+                <MDBNavItem active={this.props.location.pathname === "/"}>
+                  <MDBNavLink to="/">
+                    Home {this.props.authInfo.authToken}
+                  </MDBNavLink>
+                </MDBNavItem>
+                <MDBNavItem
+                  active={this.props.location.pathname === "/courses"}
+                >
+                  <MDBNavLink to="/courses">Courses</MDBNavLink>
+                </MDBNavItem>
+                <MDBNavItem>
+                  <MDBDropdown>
+                    <MDBDropdownToggle nav caret>
+                      <span className="mr-2">Topics</span>
+                    </MDBDropdownToggle>
+                    <MDBDropdownMenu>
+                      <MDBDropdownItem href="#!">Business</MDBDropdownItem>
+                      <MDBDropdownItem href="#!">Arts</MDBDropdownItem>
+                      <MDBDropdownItem href="#!">Development</MDBDropdownItem>
+                      <MDBDropdownItem href="#!">Data</MDBDropdownItem>
+                    </MDBDropdownMenu>
+                  </MDBDropdown>
+                </MDBNavItem>
+                <MDBNavItem>
+                  <MDBFormInline waves>
+                    <div className="md-form my-0">
+                      <input
+                        className="form-control mr-sm-2"
+                        type="text"
+                        placeholder="Search"
+                        aria-label="Search"
+                      />
+                    </div>
+                  </MDBFormInline>
+                </MDBNavItem>
+              </MDBNavbarNav>
+              <MDBNavbarNav right>
+                {authButtons}
+                {profileButton}
+              </MDBNavbarNav>
+            </MDBCollapse>
+          </MDBNavbar>
 
-        <MDBModal isOpen={this.state.modal} toggle={this.toggleLoginModal}>
-          <MDBModalHeader>Login</MDBModalHeader>
-          <MDBModalBody>
-            <form
-              className="needs-validation"
-              onSubmit={this.submitHandler}
-              noValidate
-            >
-              <MDBInput
-                value={this.state.email}
-                name="email"
-                onChange={this.changeHandler}
-                type="email"
-                id="formEmail"
-                label="Email"
-                required
-              >
-                <div className="invalid-feedback">
-                  Please provide a valid email
-                </div>
-              </MDBInput>
-
-              <MDBInput
-                value={this.state.password}
-                name="password"
-                onChange={this.changeHandler}
-                type="password"
-                id="formPassword"
-                label="Password"
-                required
-              >
-                <div className="invalid-feedback">
-                  Please provide a valid password
-                </div>
-              </MDBInput>
-              <MDBBtn color="cyan accent-2" onClick={this.toggleLoginModal}>
-                Close
-              </MDBBtn>
-              <MDBBtn color="primary" type="submit">
-                Login
-              </MDBBtn>
-            </form>
-          </MDBModalBody>
-        </MDBModal>
-      </div>
+          <LoginModalComponent isOpen={this.state.loginModal} toggleLoginModal={this.toggleLoginModal}/>
+        </div>
+      )
     );
   }
 }
