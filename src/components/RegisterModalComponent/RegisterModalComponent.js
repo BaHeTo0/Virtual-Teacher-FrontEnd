@@ -45,22 +45,31 @@ class RegisterModalComponent extends Component {
     event.preventDefault();
 
     if (!this.formaValid(this.state.formErrors)) {
-      this.setState({ registerError: "Fill all the required fields" });
+      this.setState({ registerError: "Some fields contain errors!" });
       return;
     }
-    console.log("tva go nema");
 
     const data = {
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
       email: this.state.email,
-      password: this.state.password
+      password: this.state.password,
+      birthDate: DateTimeFormat(this.state.selectedDay, "yyyy-mm-dd")
     };
     axios
-      .post("http://localhost:8080/api/auth/login", data)
+      .post("http://localhost:8080/api/auth/register", data)
       .then(response => {
         console.log(response);
+        this.props.authHandler("authToken", response.data.token);
+        this.props.authHandler("userId", response.data.id);
+        this.props.authHandler("firstName", response.data.firstName);
+        response.data.roles.forEach(element => {
+          this.props.authHandler(element.name, true);
+        });
+        this.props.toggleModal();
       })
       .catch(error => {
-        console.log(error.response);
+        this.setState({ registerError: error.response.data.message });
       });
   };
 
@@ -114,7 +123,6 @@ class RegisterModalComponent extends Component {
     let valid = true;
 
     Object.values(formErrors).forEach(error => {
-      console.log(error.length);
       if (error.length > 0) valid = false;
     });
     return valid;
@@ -225,7 +233,6 @@ class RegisterModalComponent extends Component {
                 {this.state.registerError}
               </MDBCol>
             </MDBRow>
-
           </form>
         </MDBModalBody>
       </MDBModal>

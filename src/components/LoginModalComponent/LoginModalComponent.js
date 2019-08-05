@@ -41,6 +41,7 @@ class LoginModalComponent extends Component {
           this.props.authHandler(element.name, true);
         });
         this.setState({ badAuth: false });
+        this.props.toggleModal();
       })
       .catch(error => {
         this.setState({ badAuth: true });
