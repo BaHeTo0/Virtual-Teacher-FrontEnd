@@ -15,13 +15,12 @@ import {
   MDBDropdownMenu,
   MDBDropdownItem
 } from "mdbreact";
+
 import "./NavBarContainer.css";
 import LoginModalComponent from "../../components/LoginModalComponent/LoginModalComponent";
-<<<<<<< HEAD
 import NotificationComponent from "../../components/NotificationComponent/NotificationComponent"
-=======
 import RegisterModalComponent from "../../components/RegisterModalComponent/RegisterModalComponent";
->>>>>>> fe043531bfa7c67cee01b56f96ced1cab2895c1e
+
 
 class NavBarContainer extends Component {
   constructor(props) {
