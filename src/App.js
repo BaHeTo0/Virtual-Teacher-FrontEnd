@@ -8,6 +8,7 @@ import { Route, Switch } from "react-router-dom";
 import HomeContainer from "./containers/HomeContainer/HomeContainer";
 import CoursesContainer from "./containers/CoursesContainer/CoursesContainer";
 import FooterContainer from "./containers/FooterContainer/FooterContainer";
+import axios from "axios";
 
 class App extends Component {
   constructor(props) {
@@ -42,6 +43,34 @@ class App extends Component {
     this.authHandler("Teacher", false);
     this.authHandler("Admin", false);
   };
+
+  componentDidMount() {
+    if (this.state.authToken !== "") {
+      let config = {
+        headers: {
+          Authorization: "Bearer " + this.state.authToken
+        }
+      };
+
+      console.log(this.state.authToken);
+
+      axios
+        .post("http://localhost:8080/api/auth/validate", null, config)
+        .then(response => {
+          console.log(response);
+          this.authHandler("authToken", response.data.token);
+          this.authHandler("userId", response.data.id);
+          this.authHandler("firstName", response.data.firstName);
+          response.data.roles.forEach(element => {
+            this.authHandler(element.name, true);
+          });
+        })
+        .catch(error => {
+          console.log(error.response);
+          this.logoutHandler();
+        });
+    }
+  }
 
   render() {
     return (
