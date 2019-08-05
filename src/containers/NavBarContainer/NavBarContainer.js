@@ -17,6 +17,7 @@ import {
 } from "mdbreact";
 import "./NavBarContainer.css";
 import LoginModalComponent from "../../components/LoginModalComponent/LoginModalComponent";
+import NotificationComponent from "../../components/NotificationComponent/NotificationComponent"
 
 class NavBarContainer extends Component {
   constructor(props) {
@@ -47,14 +48,13 @@ class NavBarContainer extends Component {
   };
 
   toggleLoginModal = () => {
-    this.setState({
-      loginModal: !this.state.loginModal
-    });
+    this.setState({ loginModal: !this.state.loginModal });
   };
 
   render() {
     let authButtons = null;
     let profileButton = null;
+    let notificationButton = null;
 
     if (this.props.authInfo.authToken === "") {
       authButtons = (
@@ -75,6 +75,8 @@ class NavBarContainer extends Component {
         </React.Fragment>
       );
     } else {
+      notificationButton = <NotificationComponent />
+
       profileButton = (
         <React.Fragment>
           <MDBNavItem>
@@ -145,6 +147,7 @@ class NavBarContainer extends Component {
             </MDBNavbarNav>
             <MDBNavbarNav right>
               {authButtons}
+              {notificationButton}
               {profileButton}
             </MDBNavbarNav>
           </MDBCollapse>
