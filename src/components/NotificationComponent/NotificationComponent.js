@@ -1,6 +1,7 @@
 import React from "react"
 import { MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem } from "mdbreact";
 import "./NotificationComponent.css"
+import axios from "axios"
 
 class NotificationComponent extends React.Component {
 
@@ -9,8 +10,8 @@ class NotificationComponent extends React.Component {
 
         this.state = {
             notifications: [],
-            defaultColor: "default-color",
-            warningColor: "warn-color"
+            defaultColor: "light-blue",
+            warningColor: "amber"
         }
     }
 
@@ -18,26 +19,51 @@ class NotificationComponent extends React.Component {
         event.preventDefault();
     }
 
+    updateNotifications = () => {
+
+        let newNotifications = [];
+
+        axios
+        .get("http://localhost:8080/api/notifications/unseen/"+this.props.userId)
+        .then(response => {
+          console.log(response);
+        });
+    }
+
+    componentDidMount() {
+        this.updateNotifications();
+    }
+
+
     render(){
 
-        let color = this.state.notifications.length > 0 ?
-            this.state.warningColor :
+        let color = this.state.notifications.length === 0 ?
+            this.state.defaultColor :
             this.state.warningColor;
+
+        let notificationsText;
+        switch (this.state.notifications.length) {
+            case 0:
+                notificationsText = "No Notifications";
+                break;
+            case 1:
+                notificationsText = "(1) NEW Notification";
+                break;
+            default:
+                notificationsText = "("+this.state.notifications.length+") NEW Notifications!";
+        }
 
         return(
             <MDBDropdown dropleft>
-            <MDBDropdownToggle caret
-            color="warn-color"
+            <MDBDropdownToggle
+            color={color}
             size="sm"
             >
-              Notifications
+              {notificationsText}
             </MDBDropdownToggle>
             <MDBDropdownMenu basic>
               <MDBDropdownItem>Action</MDBDropdownItem>
               <MDBDropdownItem>Another Action</MDBDropdownItem>
-              <MDBDropdownItem>Something else here</MDBDropdownItem>
-              <MDBDropdownItem divider />
-              <MDBDropdownItem>Separated link</MDBDropdownItem>
             </MDBDropdownMenu>
           </MDBDropdown>
         );

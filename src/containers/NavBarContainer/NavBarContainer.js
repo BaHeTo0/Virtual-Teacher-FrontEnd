@@ -75,7 +75,7 @@ class NavBarContainer extends Component {
         </React.Fragment>
       );
     } else {
-      notificationButton = <NotificationComponent />
+      notificationButton = <NotificationComponent userId={this.state.userId}/>
 
       profileButton = (
         <React.Fragment>
@@ -146,8 +146,8 @@ class NavBarContainer extends Component {
               </MDBNavItem>
             </MDBNavbarNav>
             <MDBNavbarNav right>
-              {authButtons}
               {notificationButton}
+              {authButtons}
               {profileButton}
             </MDBNavbarNav>
           </MDBCollapse>
