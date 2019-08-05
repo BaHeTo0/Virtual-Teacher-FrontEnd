@@ -17,6 +17,7 @@ import {
 } from "mdbreact";
 import "./NavBarContainer.css";
 import LoginModalComponent from "../../components/LoginModalComponent/LoginModalComponent";
+import RegisterModalComponent from "../../components/RegisterModalComponent/RegisterModalComponent";
 
 class NavBarContainer extends Component {
   constructor(props) {
@@ -24,23 +25,13 @@ class NavBarContainer extends Component {
 
     this.state = {
       isOpen: false,
-      loginModal: false
+      loginModal: false,
+      registerModal: false
     };
 
     this.toggleLoginModal = this.toggleLoginModal.bind(this);
+    this.toggleRegisterModal = this.toggleRegisterModal.bind(this);
   }
-
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   console.log(this.props);
-  //   console.log(nextProps);
-
-  //   const differentState = nextState != this.state;
-
-  //   const differentAuthToken =
-  //     this.props.authInfo.authToken !== nextProps.authInfo.authToken;
-  //   console.log(differentAuthToken);
-  //   return differentAuthToken || differentState;
-  // }
 
   toggleCollapse = () => {
     this.setState({ isOpen: !this.state.isOpen });
@@ -49,6 +40,12 @@ class NavBarContainer extends Component {
   toggleLoginModal = () => {
     this.setState({
       loginModal: !this.state.loginModal
+    });
+  };
+
+  toggleRegisterModal = () => {
+    this.setState({
+      registerModal: !this.state.registerModal
     });
   };
 
@@ -63,14 +60,15 @@ class NavBarContainer extends Component {
             <MDBBtn
               outline
               onClick={this.toggleLoginModal}
-              color="white"
               size="sm"
             >
               Login
             </MDBBtn>
           </MDBNavItem>
           <MDBNavItem>
-            <MDBBtn size="sm">Register</MDBBtn>
+            <MDBBtn onClick={this.toggleRegisterModal} size="sm">
+              Register
+            </MDBBtn>
           </MDBNavItem>
         </React.Fragment>
       );
@@ -152,7 +150,13 @@ class NavBarContainer extends Component {
 
         <LoginModalComponent
           isOpen={this.state.loginModal}
-          toggleLoginModal={this.toggleLoginModal}
+          toggleModal={this.toggleLoginModal}
+          authHandler={this.props.authHandler}
+        />
+
+        <RegisterModalComponent
+          isOpen={this.state.registerModal}
+          toggleModal={this.toggleRegisterModal}
           authHandler={this.props.authHandler}
         />
       </div>
