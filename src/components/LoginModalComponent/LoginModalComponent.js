@@ -41,6 +41,7 @@ class LoginModalComponent extends Component {
           this.props.authHandler(element.name, true);
         });
         this.setState({ badAuth: false });
+        this.props.toggleModal();
       })
       .catch(error => {
         this.setState({ badAuth: true });
@@ -62,7 +63,7 @@ class LoginModalComponent extends Component {
     }
 
     return (
-      <MDBModal isOpen={this.props.isOpen} toggle={this.props.toggleLoginModal}>
+      <MDBModal isOpen={this.props.isOpen} toggle={this.props.toggleModal}>
         <MDBModalHeader>Login</MDBModalHeader>
         <MDBModalBody>
           <form onSubmit={this.loginHandler}>
@@ -93,9 +94,8 @@ class LoginModalComponent extends Component {
               />
               {incorrectPassword}
             </div>
-            <div className="text-center">
-              <MDBBtn type="submit">Login</MDBBtn>
-            </div>
+            <div className="mt-4" />
+            <MDBBtn type="submit">Login</MDBBtn>
           </form>
         </MDBModalBody>
       </MDBModal>
