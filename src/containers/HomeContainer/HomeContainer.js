@@ -9,7 +9,8 @@ class HomeContainer extends Component {
     super(props);
 
     this.state = {
-      topCourses: null
+      topCourses: null,
+      recentCourses: null
     };
   }
 
@@ -22,6 +23,16 @@ class HomeContainer extends Component {
       .catch(error => {
         console.log(error.response);
         alert("Couldn't load top courses");
+      });
+
+      axios
+      .get("http://localhost:8080/api/courses/recent?size=4")
+      .then(response => {
+        this.setState({ recentCourses: response.data.content });
+      })
+      .catch(error => {
+        console.log(error.response);
+        alert("Couldn't load recent courses");
       });
   }
 
@@ -65,6 +76,7 @@ class HomeContainer extends Component {
           <br />
           <h3>Most Recent courses</h3>
           <br />
+          <CourseCardsContainer courses={this.state.recentCourses} />
         </MDBContainer>
       </div>
     );

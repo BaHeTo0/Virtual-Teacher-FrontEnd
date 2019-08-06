@@ -1,8 +1,27 @@
 .CourseCardComponent {
   margin-bottom: 2%;
-  
 }
-.img-fluid {
+
+.CourseCardComponent .card-body {
+  height: 210px;
+  max-width: 100%;
+}
+
+.CourseCardComponent .card-text {
+  overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;  
+}
+
+.CourseCardComponent .img-fluid {
   height: 172px;
   min-width: 100%;
+}
+
+.CourseCardComponent .bottom-right
+{
+  position: absolute;
+    bottom: 5px;
+    right: 15px;
 }
