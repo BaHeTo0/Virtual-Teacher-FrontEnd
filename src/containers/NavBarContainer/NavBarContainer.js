@@ -18,9 +18,8 @@ import {
 
 import "./NavBarContainer.css";
 import LoginModalComponent from "../../components/LoginModalComponent/LoginModalComponent";
-import NotificationComponent from "../../components/NotificationComponent/NotificationComponent"
+import NotificationComponent from "../../components/NotificationComponent/NotificationComponent";
 import RegisterModalComponent from "../../components/RegisterModalComponent/RegisterModalComponent";
-
 
 class NavBarContainer extends Component {
   constructor(props) {
@@ -59,11 +58,7 @@ class NavBarContainer extends Component {
       authButtons = (
         <React.Fragment>
           <MDBNavItem>
-            <MDBBtn
-              outline
-              onClick={this.toggleLoginModal}
-              size="sm"
-            >
+            <MDBBtn outline onClick={this.toggleLoginModal} size="sm">
               Login
             </MDBBtn>
           </MDBNavItem>
@@ -75,7 +70,7 @@ class NavBarContainer extends Component {
         </React.Fragment>
       );
     } else {
-      notificationButton = <NotificationComponent userId={this.state.userId}/>
+      notificationButton = <NotificationComponent userId={this.state.userId} />;
 
       profileButton = (
         <React.Fragment>

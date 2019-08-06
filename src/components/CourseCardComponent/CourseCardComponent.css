@@ -1,4 +1,8 @@
-.CourseCardComponent
-{
-    margin-bottom: 2%;
+.CourseCardComponent {
+  margin-bottom: 2%;
+  
+}
+.img-fluid {
+  height: 172px;
+  min-width: 100%;
 }
