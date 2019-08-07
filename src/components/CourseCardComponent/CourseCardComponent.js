@@ -20,7 +20,7 @@ class CourseCardComponent extends Component {
           <MDBCardImage
             className="img-fluid"
             src={this.props.course.thumbnail.filePath}
-            waves
+            waves={false}
           />
           {/* <p className="font-weight-light">Topic Rating</p> */}
           <MDBCardBody>
