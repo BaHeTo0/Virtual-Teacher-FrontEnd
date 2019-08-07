@@ -68,7 +68,7 @@ class HomeContainer extends Component {
           <br />
           <h3>Top rated courses</h3>
           <br />
-          <CourseCardsContainer courses={this.state.topCourses} key={1}/>
+          <CourseCardsContainer courses={this.state.topCourses} />
         </MDBContainer>
 
         <hr />
@@ -76,7 +76,7 @@ class HomeContainer extends Component {
           <br />
           <h3>Most Recent courses</h3>
           <br />
-          <CourseCardsContainer courses={this.state.recentCourses} key={2}/>
+          <CourseCardsContainer courses={this.state.recentCourses} />
         </MDBContainer>
       </div>
     );
