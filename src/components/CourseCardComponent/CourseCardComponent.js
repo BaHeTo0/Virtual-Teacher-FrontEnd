@@ -22,12 +22,10 @@ class CourseCardComponent extends Component {
             src={this.props.course.thumbnail.filePath}
             waves={false}
           />
-          {/* <p className="font-weight-light">Topic Rating</p> */}
+         
           <MDBCardBody>
             <MDBCardTitle>{this.props.course.name}</MDBCardTitle>
-            <MDBCardText>
-              {removeMd(this.props.course.description)}
-            </MDBCardText>
+            <MDBCardText>{removeMd(this.props.course.description)}</MDBCardText>
             <MDBCardText className="bottom-right">
               <a href="/course/1">Go to course -></a>
             </MDBCardText>

@@ -58,7 +58,12 @@ class NavBarContainer extends Component {
       authButtons = (
         <React.Fragment>
           <MDBNavItem>
-            <MDBBtn outline onClick={this.toggleLoginModal} size="sm" color="white">
+            <MDBBtn
+              outline
+              onClick={this.toggleLoginModal}
+              size="sm"
+              color="white"
+            >
               Login
             </MDBBtn>
           </MDBNavItem>
@@ -121,9 +126,15 @@ class NavBarContainer extends Component {
                   </MDBDropdownToggle>
                   <MDBDropdownMenu>
                     <MDBDropdownItem href="#!">Business</MDBDropdownItem>
-                    <MDBDropdownItem href="#!">Arts</MDBDropdownItem>
+                    <MDBDropdownItem href="#!">Design</MDBDropdownItem>
                     <MDBDropdownItem href="#!">Development</MDBDropdownItem>
-                    <MDBDropdownItem href="#!">Data</MDBDropdownItem>
+                    <MDBDropdownItem href="#!">
+                      Finance&amp;Accounting
+                    </MDBDropdownItem>
+                    <MDBDropdownItem href="#!">
+                      Health&amp;Fitness
+                    </MDBDropdownItem>
+                    <MDBDropdownItem href="#!">IT&amp;Software</MDBDropdownItem>
                   </MDBDropdownMenu>
                 </MDBDropdown>
               </MDBNavItem>
@@ -141,7 +152,7 @@ class NavBarContainer extends Component {
               </MDBNavItem>
             </MDBNavbarNav>
             <MDBNavbarNav right>
-              {notificationButton}
+              {/* {notificationButton} */}
               {authButtons}
               {profileButton}
             </MDBNavbarNav>

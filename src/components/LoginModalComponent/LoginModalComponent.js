@@ -7,13 +7,12 @@ import {
   MDBInput
 } from "mdbreact";
 import "./LoginModalComponent.css";
-import axios from "axios";
 import LoginBodyComponent from "../LoginBodyComponent/LoginBodyComponent";
+import axios from "axios";
 
 class LoginModalComponent extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       email: "",
       password: "",
@@ -54,12 +53,50 @@ class LoginModalComponent extends Component {
   };
 
   render() {
-    
+    let incorrectPassword = null;
+    if (this.state.badAuth) {
+      incorrectPassword = (
+        <p className="font-weight-bold text-center text-danger">
+          Incorrect email/password!
+        </p>
+      );
+    }
+
     return (
       <MDBModal isOpen={this.props.isOpen} toggle={this.props.toggleModal}>
         <MDBModalHeader>Login</MDBModalHeader>
         <MDBModalBody>
-          <LoginBodyComponent authInfo={this.props.authInfo} authHandler={this.props.authHandler}/>
+          <form onSubmit={this.loginHandler}>
+            <div className="grey-text">
+              <MDBInput
+                label="Email"
+                icon="envelope"
+                name="email"
+                value={this.state.email}
+                onChange={this.changeHandler}
+                group
+                type="email"
+                error="wrong"
+                success="right"
+                required
+                validate
+              />
+              <MDBInput
+                label="Password"
+                icon="lock"
+                name="password"
+                value={this.state.password}
+                onChange={this.changeHandler}
+                group
+                type="password"
+                validate
+                required
+              />
+              {incorrectPassword}
+            </div>
+            <div className="mt-4" />
+            <MDBBtn type="submit">Login</MDBBtn>
+          </form>
         </MDBModalBody>
       </MDBModal>
     );
