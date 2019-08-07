@@ -9,7 +9,7 @@ import HomeContainer from "./containers/HomeContainer/HomeContainer";
 import CoursesContainer from "./containers/CoursesContainer/CoursesContainer";
 import FooterContainer from "./containers/FooterContainer/FooterContainer";
 import axios from "axios";
-import LoginBodyComponent from "./components/LoginBodyComponent/LoginBodyComponent";
+import LoginModalComponent from "./components/LoginModalComponent/LoginModalComponent";
 import PrivateRoute from "./PrivateRoute";
 
 class App extends Component {
@@ -90,7 +90,7 @@ class App extends Component {
         />
         <Switch>
           <Route path="/courses" component={CoursesContainer} />
-          <Route path="/login" component={LoginBodyComponent} />
+          <Route path="/login" component={LoginModalComponent} />
           <PrivateRoute path="/course" authInfo={this.state}/>
           <Route
             path="/"

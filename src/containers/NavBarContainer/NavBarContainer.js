@@ -152,7 +152,7 @@ class NavBarContainer extends Component {
               </MDBNavItem>
             </MDBNavbarNav>
             <MDBNavbarNav right>
-              {/* {notificationButton} */}
+              {notificationButton}
               {authButtons}
               {profileButton}
             </MDBNavbarNav>
