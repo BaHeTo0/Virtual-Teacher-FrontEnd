@@ -11,22 +11,36 @@ class NotificationComponent extends React.Component {
         this.state = {
             notifications: [],
             defaultColor: "light-blue",
-            warningColor: "amber"
+            warningColor: "amber",
+            config: {
+                headers: {
+                    Authorization: "Bearer " + this.props.authInfo.authToken
+                  }
+            }
         }
     }
 
-    clickHandler = event => {
-        event.preventDefault();
+    clickHandler = id => {
+
+        axios
+        .put("http://localhost:8080/api/notifications/see/"+id, null, this.state.config)
+        .then(response => {
+          this.updateNotifications();
+        })
+        .catch(error => {
+            console.log(error.response);
+        });
     }
 
     updateNotifications = () => {
 
-        let newNotifications = [];
-
         axios
-        .get("http://localhost:8080/api/notifications/unseen/"+this.props.userId)
+        .get("http://localhost:8080/api/notifications/unseen", this.state.config)
         .then(response => {
-          console.log(response);
+          this.setState({notifications: response.data});
+        })
+        .catch(error => {
+            console.log(error.response);
         });
     }
 
@@ -62,8 +76,9 @@ class NotificationComponent extends React.Component {
               {notificationsText}
             </MDBDropdownToggle>
             <MDBDropdownMenu basic>
-              <MDBDropdownItem>Action</MDBDropdownItem>
-              <MDBDropdownItem>Another Action</MDBDropdownItem>
+                {this.state.notifications.map((notification, i) => {
+                    return(<MDBDropdownItem onClick={() => this.clickHandler(notification.id)} key={notification.id}>{notification.message}</MDBDropdownItem>)
+                })}
             </MDBDropdownMenu>
           </MDBDropdown>
         );

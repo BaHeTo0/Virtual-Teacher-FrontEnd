@@ -75,7 +75,7 @@ class NavBarContainer extends Component {
         </React.Fragment>
       );
     } else {
-      notificationButton = <NotificationComponent userId={this.state.userId}/>
+      notificationButton = <NotificationComponent authInfo={this.props.authInfo}/>
 
       profileButton = (
         <React.Fragment>
