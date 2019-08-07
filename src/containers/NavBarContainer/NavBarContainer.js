@@ -18,9 +18,8 @@ import {
 
 import "./NavBarContainer.css";
 import LoginModalComponent from "../../components/LoginModalComponent/LoginModalComponent";
-import NotificationComponent from "../../components/NotificationComponent/NotificationComponent"
+import NotificationComponent from "../../components/NotificationComponent/NotificationComponent";
 import RegisterModalComponent from "../../components/RegisterModalComponent/RegisterModalComponent";
-
 
 class NavBarContainer extends Component {
   constructor(props) {
@@ -63,6 +62,7 @@ class NavBarContainer extends Component {
               outline
               onClick={this.toggleLoginModal}
               size="sm"
+              color="white"
             >
               Login
             </MDBBtn>
@@ -126,9 +126,15 @@ class NavBarContainer extends Component {
                   </MDBDropdownToggle>
                   <MDBDropdownMenu>
                     <MDBDropdownItem href="#!">Business</MDBDropdownItem>
-                    <MDBDropdownItem href="#!">Arts</MDBDropdownItem>
+                    <MDBDropdownItem href="#!">Design</MDBDropdownItem>
                     <MDBDropdownItem href="#!">Development</MDBDropdownItem>
-                    <MDBDropdownItem href="#!">Data</MDBDropdownItem>
+                    <MDBDropdownItem href="#!">
+                      Finance&amp;Accounting
+                    </MDBDropdownItem>
+                    <MDBDropdownItem href="#!">
+                      Health&amp;Fitness
+                    </MDBDropdownItem>
+                    <MDBDropdownItem href="#!">IT&amp;Software</MDBDropdownItem>
                   </MDBDropdownMenu>
                 </MDBDropdown>
               </MDBNavItem>
@@ -146,7 +152,7 @@ class NavBarContainer extends Component {
               </MDBNavItem>
             </MDBNavbarNav>
             <MDBNavbarNav right>
-              {notificationButton}
+              {/* {notificationButton} */}
               {authButtons}
               {profileButton}
             </MDBNavbarNav>

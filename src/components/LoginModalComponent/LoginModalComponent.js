@@ -7,12 +7,12 @@ import {
   MDBInput
 } from "mdbreact";
 import "./LoginModalComponent.css";
+import LoginBodyComponent from "../LoginBodyComponent/LoginBodyComponent";
 import axios from "axios";
 
 class LoginModalComponent extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       email: "",
       password: "",

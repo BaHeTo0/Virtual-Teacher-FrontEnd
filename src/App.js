@@ -9,6 +9,8 @@ import HomeContainer from "./containers/HomeContainer/HomeContainer";
 import CoursesContainer from "./containers/CoursesContainer/CoursesContainer";
 import FooterContainer from "./containers/FooterContainer/FooterContainer";
 import axios from "axios";
+import LoginBodyComponent from "./components/LoginBodyComponent/LoginBodyComponent";
+import PrivateRoute from "./PrivateRoute";
 
 class App extends Component {
   constructor(props) {
@@ -22,7 +24,7 @@ class App extends Component {
         localStorage.getItem("authToken") == null
           ? ""
           : localStorage.getItem("authToken"),
-          
+
       userId: localStorage.getItem("userId"),
       firstName: localStorage.getItem("firstName"),
       Student: localStorage.getItem("Student"),
@@ -88,6 +90,8 @@ class App extends Component {
         />
         <Switch>
           <Route path="/courses" component={CoursesContainer} />
+          <Route path="/login" component={LoginBodyComponent} />
+          <PrivateRoute path="/course" authInfo={this.state}/>
           <Route
             path="/"
             render={routeProps => (

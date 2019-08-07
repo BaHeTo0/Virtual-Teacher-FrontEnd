@@ -1,23 +1,27 @@
-import React from "react"
-import { MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem } from "mdbreact";
-import "./NotificationComponent.css"
-import axios from "axios"
+import React from "react";
+import {
+  MDBDropdown,
+  MDBDropdownToggle,
+  MDBDropdownMenu,
+  MDBDropdownItem
+} from "mdbreact";
+import "./NotificationComponent.css";
+import axios from "axios";
 
 class NotificationComponent extends React.Component {
-
     constructor(props) {
-        super(props)
+        super(props);
 
         this.state = {
-            notifications: [],
-            defaultColor: "light-blue",
-            warningColor: "amber",
-            config: {
-                headers: {
-                    Authorization: "Bearer " + this.props.authInfo.authToken
-                  }
+        notifications: [],
+        defaultColor: "light-blue",
+        warningColor: "amber",
+        config: {
+            headers: {
+                Authorization: "Bearer " + this.props.authInfo.authToken
             }
         }
+        };
     }
 
     clickHandler = id => {
@@ -49,22 +53,23 @@ class NotificationComponent extends React.Component {
     }
 
 
-    render(){
-
-        let color = this.state.notifications.length === 0 ?
-            this.state.defaultColor :
-            this.state.warningColor;
+  render() {
+    let color =
+      this.state.notifications.length === 0
+        ? this.state.defaultColor
+        : this.state.warningColor;
 
         let notificationsText;
         switch (this.state.notifications.length) {
-            case 0:
-                notificationsText = "No Notifications";
-                break;
-            case 1:
-                notificationsText = "(1) NEW Notification";
-                break;
-            default:
-                notificationsText = "("+this.state.notifications.length+") NEW Notifications!";
+          case 0:
+            notificationsText = "No Notifications";
+            break;
+          case 1:
+            notificationsText = "(1) NEW Notification";
+            break;
+          default:
+            notificationsText =
+              "(" + this.state.notifications.length + ") NEW Notifications!";
         }
 
         return(
@@ -82,8 +87,8 @@ class NotificationComponent extends React.Component {
             </MDBDropdownMenu>
           </MDBDropdown>
         );
-    }
 
+  }
 }
 
 export default NotificationComponent;

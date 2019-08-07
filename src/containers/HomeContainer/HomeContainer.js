@@ -2,8 +2,40 @@ import React, { Component } from "react";
 import "./HomeContainer.css";
 import { MDBContainer, MDBRow, MDBCol } from "mdbreact";
 import CourseCardsContainer from "../CourseCardsContainer/CourseCardsContainer";
+import axios from "axios";
 
 class HomeContainer extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      topCourses: null,
+      recentCourses: null
+    };
+  }
+
+  componentDidMount() {
+    axios
+      .get("http://localhost:8080/api/courses/top?size=4")
+      .then(response => {
+        this.setState({ topCourses: response.data.content });
+      })
+      .catch(error => {
+        console.log(error.response);
+        alert("Couldn't load top courses");
+      });
+
+      axios
+      .get("http://localhost:8080/api/courses/recent?size=4")
+      .then(response => {
+        this.setState({ recentCourses: response.data.content });
+      })
+      .catch(error => {
+        console.log(error.response);
+        alert("Couldn't load recent courses");
+      });
+  }
+
   render() {
     return (
       <div className="HomeContainer">
@@ -36,7 +68,7 @@ class HomeContainer extends Component {
           <br />
           <h3>Top rated courses</h3>
           <br />
-          <CourseCardsContainer />
+          <CourseCardsContainer courses={this.state.topCourses} />
         </MDBContainer>
 
         <hr />
@@ -44,7 +76,7 @@ class HomeContainer extends Component {
           <br />
           <h3>Most Recent courses</h3>
           <br />
-          <CourseCardsContainer />
+          <CourseCardsContainer courses={this.state.recentCourses} />
         </MDBContainer>
       </div>
     );
