@@ -58,7 +58,7 @@ class NavBarContainer extends Component {
       authButtons = (
         <React.Fragment>
           <MDBNavItem>
-            <MDBBtn outline onClick={this.toggleLoginModal} size="sm">
+            <MDBBtn outline onClick={this.toggleLoginModal} size="sm" color="white">
               Login
             </MDBBtn>
           </MDBNavItem>

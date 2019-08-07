@@ -8,8 +8,6 @@ import {
   MDBCardText
 } from "mdbreact";
 
-import ReactMarkDown from "react-markdown";
-
 const removeMd = require("remove-markdown");
 
 class CourseCardComponent extends Component {
@@ -31,7 +29,7 @@ class CourseCardComponent extends Component {
               {removeMd(this.props.course.description)}
             </MDBCardText>
             <MDBCardText className="bottom-right">
-              <a href="">Go to course -></a>
+              <a href="/course/1">Go to course -></a>
             </MDBCardText>
           </MDBCardBody>
         </MDBCard>
