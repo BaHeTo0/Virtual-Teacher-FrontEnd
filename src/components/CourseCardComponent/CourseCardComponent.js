@@ -14,6 +14,15 @@ class CourseCardComponent extends Component {
   render() {
     let card = null;
 
+    let cardLink = null;
+
+    if (this.props.authInfo.authToken.length > 1)
+      cardLink = (
+        <MDBCardText className="bottom-right">
+          <a href={"/course/" + this.props.course.id}>Go to course -></a>
+        </MDBCardText>
+      );
+
     if (this.props.course !== null) {
       card = (
         <MDBCard>
@@ -22,13 +31,11 @@ class CourseCardComponent extends Component {
             src={this.props.course.thumbnail.filePath}
             waves={false}
           />
-         
+
           <MDBCardBody>
             <MDBCardTitle>{this.props.course.name}</MDBCardTitle>
             <MDBCardText>{removeMd(this.props.course.description)}</MDBCardText>
-            <MDBCardText className="bottom-right">
-              <a href="/course/1">Go to course -></a>
-            </MDBCardText>
+            {cardLink}
           </MDBCardBody>
         </MDBCard>
       );

@@ -25,7 +25,7 @@ class HomeContainer extends Component {
         alert("Couldn't load top courses");
       });
 
-      axios
+    axios
       .get("http://localhost:8080/api/courses/recent?size=4")
       .then(response => {
         this.setState({ recentCourses: response.data.content });
@@ -68,7 +68,10 @@ class HomeContainer extends Component {
           <br />
           <h3>Top rated courses</h3>
           <br />
-          <CourseCardsContainer courses={this.state.topCourses} />
+          <CourseCardsContainer
+            authInfo={this.props.authInfo}
+            courses={this.state.topCourses}
+          />
         </MDBContainer>
 
         <hr />
@@ -76,7 +79,10 @@ class HomeContainer extends Component {
           <br />
           <h3>Most Recent courses</h3>
           <br />
-          <CourseCardsContainer courses={this.state.recentCourses} />
+          <CourseCardsContainer
+            authInfo={this.props.authInfo}
+            courses={this.state.recentCourses}
+          />
         </MDBContainer>
       </div>
     );

@@ -11,7 +11,11 @@ class CourseCardsContainer extends Component {
       cards = this.props.courses.map(course => {
         return (
           <MDBCol md="3" key={course.id}>
-            <CourseCardComponent course={course} key={course.id} />
+            <CourseCardComponent
+              authInfo={this.props.authInfo}
+              course={course}
+              key={course.id}
+            />
           </MDBCol>
         );
       });
