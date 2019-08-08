@@ -1,3 +1,9 @@
 .App {
   text-align: center;
 }
+
+.App .dynamic-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 74.5vh;
+}

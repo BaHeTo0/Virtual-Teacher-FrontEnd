@@ -4,13 +4,15 @@ import { MDBBtn, MDBRow, MDBCol } from "mdbreact";
 import axios from "axios";
 import StarRatings from "react-star-ratings";
 import ReactMarkDown from "react-markdown";
+import { Redirect } from "react-router";
 
 class CourseContainer extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      courseData: null
+      courseData: null,
+      redirect: false
     };
   }
 
@@ -32,11 +34,16 @@ class CourseContainer extends Component {
       })
       .catch(error => {
         console.log(error.response);
+        this.setState({ redirect: true });
       });
   }
 
   render() {
+    if (this.state.redirect === true) {
+      return <Redirect to="/404" />;
+    }
     if (this.state.courseData === null) return null;
+
     return (
       <div className="CourseContainer">
         <MDBRow>
@@ -68,7 +75,6 @@ class CourseContainer extends Component {
         <hr />
 
         <h1>Lectures</h1>
-        
       </div>
     );
   }

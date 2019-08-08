@@ -39,9 +39,10 @@ class NotificationComponent extends React.Component {
     updateNotifications = () => {
 
         axios
-        .get("http://localhost:8080/api/notifications/unseen", this.state.config)
+        .get("http://localhost:8080/api/notifications/unseen/1", this.state.config)
         .then(response => {
           this.setState({notifications: response.data});
+          console.log(response);
         })
         .catch(error => {
             console.log(error.response);

@@ -9,9 +9,8 @@ import HomeContainer from "./containers/HomeContainer/HomeContainer";
 import CoursesContainer from "./containers/CoursesContainer/CoursesContainer";
 import FooterContainer from "./containers/FooterContainer/FooterContainer";
 import axios from "axios";
-import LoginModalComponent from "./components/LoginModalComponent/LoginModalComponent";
-import PrivateRoute from "./PrivateRoute";
 import CourseContainer from "./containers/CourseContainer/CourseContainer";
+import NotFoundContainer from "./containers/NotFoundContainer/NotFoundContainer";
 
 class App extends Component {
   constructor(props) {
@@ -87,30 +86,35 @@ class App extends Component {
             />
           )}
         />
-        <Switch>
-          <Route
-            path="/course/:id"
-            render={routeProps => (
-              <CourseContainer
-                {...routeProps}
-                authInfo={this.state}
-                authHandler={this.authHandler}
-              />
-            )}
-          />
-          <Route path="/courses" component={CoursesContainer} />
-          {/* <PrivateRoute path="/course" authInfo={this.state} component={CourseContainer} /> */}
-          <Route
-            path="/"
-            render={routeProps => (
-              <HomeContainer
-                {...routeProps}
-                authInfo={this.state}
-                authHandler={this.authHandler}
-              />
-            )}
-          />
-        </Switch>
+        <div className="dynamic-container">
+          <Switch>
+            <Route
+              path="/course/:id"
+              render={routeProps => (
+                <CourseContainer
+                  {...routeProps}
+                  authInfo={this.state}
+                  authHandler={this.authHandler}
+                />
+              )}
+            />
+            <Route path="/courses" component={CoursesContainer} />
+
+            <Route path="/404" component={NotFoundContainer} />
+
+            <Route
+              path="/"
+              render={routeProps => (
+                <HomeContainer
+                  {...routeProps}
+                  authInfo={this.state}
+                  authHandler={this.authHandler}
+                />
+              )}
+            />
+          </Switch>
+        </div>
+
         <FooterContainer />
       </div>
     );

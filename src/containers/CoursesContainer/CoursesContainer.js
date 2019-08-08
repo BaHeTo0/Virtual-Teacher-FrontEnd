@@ -19,7 +19,7 @@ class CoursesContainer extends Component {
   }
 
   componentDidMount() {
-    Object.keys(this.state).map((key, index) => {
+    Object.keys(this.state).forEach((key, index) => {
       axios
         .get(`http://localhost:8080/api/courses/topic/${index + 1}?size=4`)
         .then(response => {
