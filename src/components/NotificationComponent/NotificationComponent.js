@@ -9,35 +9,49 @@ import "./NotificationComponent.css";
 import axios from "axios";
 
 class NotificationComponent extends React.Component {
-  constructor(props) {
-    super(props);
+    constructor(props) {
+        super(props);
 
-    this.state = {
-      notifications: [],
-      defaultColor: "light-blue",
-      warningColor: "amber"
-    };
-  }
+        this.state = {
+        notifications: [],
+        defaultColor: "light-blue",
+        warningColor: "amber",
+        config: {
+            headers: {
+                Authorization: "Bearer " + this.props.authInfo.authToken
+            }
+        }
+        };
+    }
 
-  clickHandler = event => {
-    event.preventDefault();
-  };
+    clickHandler = id => {
 
-  updateNotifications = () => {
-    let newNotifications = [];
+        axios
+        .put("http://localhost:8080/api/notifications/see/"+id, null, this.state.config)
+        .then(response => {
+          this.updateNotifications();
+        })
+        .catch(error => {
+            console.log(error.response);
+        });
+    }
 
-    axios
-      .get(
-        "http://localhost:8080/api/notifications/unseen/" + this.props.userId
-      )
-      .then(response => {
-        console.log(response);
-      });
-  };
+    updateNotifications = () => {
 
-  componentDidMount() {
-    this.updateNotifications();
-  }
+        axios
+        .get("http://localhost:8080/api/notifications/unseen", this.state.config)
+        .then(response => {
+          this.setState({notifications: response.data});
+        })
+        .catch(error => {
+            console.log(error.response);
+        });
+    }
+
+    componentDidMount() {
+        this.updateNotifications();
+    }
+
 
   render() {
     let color =
@@ -45,30 +59,35 @@ class NotificationComponent extends React.Component {
         ? this.state.defaultColor
         : this.state.warningColor;
 
-    let notificationsText;
-    switch (this.state.notifications.length) {
-      case 0:
-        notificationsText = "No Notifications";
-        break;
-      case 1:
-        notificationsText = "(1) NEW Notification";
-        break;
-      default:
-        notificationsText =
-          "(" + this.state.notifications.length + ") NEW Notifications!";
-    }
+        let notificationsText;
+        switch (this.state.notifications.length) {
+          case 0:
+            notificationsText = "No Notifications";
+            break;
+          case 1:
+            notificationsText = "(1) NEW Notification";
+            break;
+          default:
+            notificationsText =
+              "(" + this.state.notifications.length + ") NEW Notifications!";
+        }
 
-    return (
-      <MDBDropdown dropleft>
-        <MDBDropdownToggle color={color} size="sm">
-          {notificationsText}
-        </MDBDropdownToggle>
-        <MDBDropdownMenu basic>
-          <MDBDropdownItem>Action</MDBDropdownItem>
-          <MDBDropdownItem>Another Action</MDBDropdownItem>
-        </MDBDropdownMenu>
-      </MDBDropdown>
-    );
+        return(
+            <MDBDropdown dropleft>
+            <MDBDropdownToggle
+            color={color}
+            size="sm"
+            >
+              {notificationsText}
+            </MDBDropdownToggle>
+            <MDBDropdownMenu basic>
+                {this.state.notifications.map((notification, i) => {
+                    return(<MDBDropdownItem onClick={() => this.clickHandler(notification.id)} key={notification.id}>{notification.message}</MDBDropdownItem>)
+                })}
+            </MDBDropdownMenu>
+          </MDBDropdown>
+        );
+
   }
 }
 

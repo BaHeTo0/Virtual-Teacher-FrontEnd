@@ -9,6 +9,7 @@ import HomeContainer from "./containers/HomeContainer/HomeContainer";
 import CoursesContainer from "./containers/CoursesContainer/CoursesContainer";
 import FooterContainer from "./containers/FooterContainer/FooterContainer";
 import axios from "axios";
+import LoginModalComponent from "./components/LoginModalComponent/LoginModalComponent";
 import PrivateRoute from "./PrivateRoute";
 import CourseContainer from "./containers/CourseContainer/CourseContainer";
 
