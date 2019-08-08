@@ -1,7 +1,6 @@
 import React from "react";
 import "./NotFoundContainer.css";
 import image404 from "../../images/404.png";
-import { MDBBtn } from "mdbreact";
 
 const NotFoundContainer = () => {
   return (

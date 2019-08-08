@@ -6,8 +6,7 @@ import {
   MDBDropdownItem
 } from "mdbreact";
 import "./NotificationComponent.css";
-import axios from "axios";
-import { jsxFragment } from "@babel/types";
+import axios from "axios";  
 
 class NotificationComponent extends React.Component {
   constructor(props) {
@@ -81,7 +80,7 @@ class NotificationComponent extends React.Component {
           {notificationsText}
         </MDBDropdownToggle>
         <MDBDropdownMenu basic>
-          <MDBDropdownItem>
+          <MDBDropdownItem key={0}>
             <b>Notifications</b>
           </MDBDropdownItem>
           <hr />
