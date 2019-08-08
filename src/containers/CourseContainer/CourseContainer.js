@@ -56,13 +56,16 @@ class CourseContainer extends Component {
               starSpacing="0px"
             />
             <p>{this.state.courseData.topic.name}</p>
-            <ReactMarkDown source={this.state.courseData.description} />
+            <div className="short-desc-container">
+              <ReactMarkDown source={this.state.courseData.description} />
+            </div>
+            <br />
             <MDBBtn>Enroll</MDBBtn>
           </MDBCol>
           <MDBCol md="4">
             <img
-              src="https://via.placeholder.com/220x180"
-              className="rounded float-right"
+              src={this.state.courseData.thumbnail.filePath}
+              className="rounded img-thumbnail"
               alt=""
             />
           </MDBCol>
