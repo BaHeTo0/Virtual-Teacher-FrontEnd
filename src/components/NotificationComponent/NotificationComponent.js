@@ -86,7 +86,7 @@ class NotificationComponent extends React.Component {
           <hr />
           {this.state.notifications.map((notification, i) => {
             return (
-              <React.Fragment>
+              <React.Fragment key={notification.id}>
                 <MDBDropdownItem
                   style={{ whiteSpace: "normal" }}
                   onClick={() => this.clickHandler(notification.id)}
