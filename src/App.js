@@ -9,8 +9,8 @@ import HomeContainer from "./containers/HomeContainer/HomeContainer";
 import CoursesContainer from "./containers/CoursesContainer/CoursesContainer";
 import FooterContainer from "./containers/FooterContainer/FooterContainer";
 import axios from "axios";
-import LoginBodyComponent from "./components/LoginBodyComponent/LoginBodyComponent";
 import PrivateRoute from "./PrivateRoute";
+import CourseContainer from "./containers/CourseContainer/CourseContainer";
 
 class App extends Component {
   constructor(props) {
@@ -55,8 +55,6 @@ class App extends Component {
         }
       };
 
-      console.log(this.state.authToken);
-
       axios
         .post("http://localhost:8080/api/auth/validate", null, config)
         .then(response => {
@@ -89,9 +87,18 @@ class App extends Component {
           )}
         />
         <Switch>
+          <Route
+            path="/course/:id"
+            render={routeProps => (
+              <CourseContainer
+                {...routeProps}
+                authInfo={this.state}
+                authHandler={this.authHandler}
+              />
+            )}
+          />
           <Route path="/courses" component={CoursesContainer} />
-          <Route path="/login" component={LoginBodyComponent} />
-          <PrivateRoute path="/course" authInfo={this.state}/>
+          {/* <PrivateRoute path="/course" authInfo={this.state} component={CourseContainer} /> */}
           <Route
             path="/"
             render={routeProps => (
