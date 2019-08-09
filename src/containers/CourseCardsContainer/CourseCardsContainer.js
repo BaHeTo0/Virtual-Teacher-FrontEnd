@@ -5,9 +5,9 @@ import CourseCardComponent from "../../components/CourseCardComponent/CourseCard
 
 class CourseCardsContainer extends Component {
   render() {
-    let cards = "";
+    let cards = "No courses here";
 
-    if (this.props.courses !== null) {
+    if (this.props.courses !== null || this.props.courses !== []) {
       cards = this.props.courses.map(course => {
         return (
           <MDBCol md="3" key={course.id}>

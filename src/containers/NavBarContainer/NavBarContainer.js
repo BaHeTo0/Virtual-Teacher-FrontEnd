@@ -86,7 +86,7 @@ class NavBarContainer extends Component {
                 <MDBIcon icon="user" />
               </MDBDropdownToggle>
               <MDBDropdownMenu className="dropdown-default">
-                <MDBDropdownItem href="#!">
+                <MDBDropdownItem href="/profile">
                   <strong>My profile</strong>
                 </MDBDropdownItem>
                 <MDBDropdownItem onClick={this.props.logoutHandler}>

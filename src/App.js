@@ -12,6 +12,7 @@ import axios from "axios";
 import LoginModalComponent from "./components/LoginModalComponent/LoginModalComponent";
 import PrivateRoute from "./PrivateRoute";
 import CourseContainer from "./containers/CourseContainer/CourseContainer";
+import ProfilePageContainer from "./containers/ProfilePageContainer/ProfilePageContainer";
 
 class App extends Component {
   constructor(props) {
@@ -88,6 +89,14 @@ class App extends Component {
           )}
         />
         <Switch>
+          <Route
+            path="/profile"
+            render={routeProps => (
+            <ProfilePageContainer 
+              {...routeProps}
+              authInfo={this.state}
+            />)}
+          />
           <Route
             path="/course/:id"
             render={routeProps => (
