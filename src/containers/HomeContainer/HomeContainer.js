@@ -41,7 +41,7 @@ class HomeContainer extends Component {
       <div className="HomeContainer">
         <MDBContainer>
           <MDBRow>
-            <MDBCol md="8">
+            <MDBCol lg="8">
               <h2>Homepage</h2>
               <h5>The user is not logged in</h5>
               <p>
@@ -54,10 +54,10 @@ class HomeContainer extends Component {
                 in neque ac orci auctor rutrum.
               </p>
             </MDBCol>
-            <MDBCol md="4">
+            <MDBCol lg="4">
               <img
                 src="https://via.placeholder.com/220x180"
-                className="rounded float-right"
+                className="rounded"
                 alt=""
               />
             </MDBCol>

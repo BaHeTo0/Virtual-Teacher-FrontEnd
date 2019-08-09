@@ -42,7 +42,7 @@ class LectureCardComponent extends Component {
             </div>
           </MDBCol>
           <MDBCol md="2">
-            <div className="lecture-button">
+            <div className="align-baseline">
               <MDBBtn>Enroll</MDBBtn>
             </div>
           </MDBCol>

@@ -89,11 +89,14 @@ class CourseContainer extends Component {
 
         <h1>Lectures</h1>
         <LectureCardComponent />
-        <hr width="10%"/>
+        <hr width="70%" />
+        <br />
         <LectureCardComponent />
-        <hr width="10%"/>
+        <hr width="70%" />
+        <br />
         <LectureCardComponent />
-        <hr width="10%"/>
+        <hr width="70%" />
+        <br />
         <LectureCardComponent />
       </div>
     );
