@@ -71,9 +71,9 @@ class ProfilePageContainer extends React.Component {
         switch(this.state.rightSideOption) {
             case 0: rightSide = <ProfileDetailsComponent profile={this.state.profile} authInfo={this.props.authInfo}/>
                     break;
-            case 1: rightSide = <CourseCardsContainer courses={this.state.profile.enrolledCourses} />
+            case 1: rightSide = <CourseCardsContainer courses={this.state.profile.enrolledCourses} authInfo={this.props.authInfo}/>
                     break;
-            case 2: rightSide = <CourseCardsContainer courses={this.state.profile.createdCourses} />
+            case 2: rightSide = <CourseCardsContainer courses={this.state.profile.createdCourses} authInfo={this.props.authInfo}/>
                     break;
             default: rightSide = <ProfileDetailsComponent profile={this.state.profile} authInfo={this.props.authInfo}/>
         }
