@@ -1,0 +1,15 @@
+.LectureCardComponent .lecture-description {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.lecture-button
+{
+    margin-top:3rem;
+}
+
+.react-thumbnail-generator img{
+  width:80%;
+}

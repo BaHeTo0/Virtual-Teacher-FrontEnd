@@ -4,13 +4,17 @@ import { MDBBtn, MDBRow, MDBCol } from "mdbreact";
 import axios from "axios";
 import StarRatings from "react-star-ratings";
 import ReactMarkDown from "react-markdown";
+import { Redirect } from "react-router";
+import LectureCardComponent from "../../components/LectureCardComponent/LectureCardComponent";
+const removeMd = require("remove-markdown");
 
 class CourseContainer extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      courseData: null
+      courseData: null,
+      redirect: false
     };
   }
 
@@ -32,11 +36,16 @@ class CourseContainer extends Component {
       })
       .catch(error => {
         console.log(error.response);
+        this.setState({ redirect: true });
       });
   }
 
   render() {
+    if (this.state.redirect === true) {
+      return <Redirect to="/404" />;
+    }
     if (this.state.courseData === null) return null;
+
     return (
       <div className="CourseContainer">
         <MDBRow>
@@ -49,13 +58,24 @@ class CourseContainer extends Component {
               starSpacing="0px"
             />
             <p>{this.state.courseData.topic.name}</p>
-            <ReactMarkDown source={this.state.courseData.description} />
+            <div className="short-desc-container">
+              {removeMd(this.state.courseData.description)}
+            </div>
+            <br />
             <MDBBtn>Enroll</MDBBtn>
+            <br />
+
+            <h5>
+              Created by{" "}
+              {this.state.courseData.author.firstName +
+                " " +
+                this.state.courseData.author.lastName}
+            </h5>
           </MDBCol>
           <MDBCol md="4">
             <img
-              src="https://via.placeholder.com/220x180"
-              className="rounded float-right"
+              src={this.state.courseData.thumbnail.filePath}
+              className="rounded img-thumbnail"
               alt=""
             />
           </MDBCol>
@@ -63,12 +83,21 @@ class CourseContainer extends Component {
 
         <hr />
         <h1>Description of the course</h1>
-        {this.state.courseData.description}
+        <ReactMarkDown>{this.state.courseData.description}</ReactMarkDown>
 
         <hr />
 
         <h1>Lectures</h1>
-        
+        <LectureCardComponent />
+        <hr width="70%" />
+        <br />
+        <LectureCardComponent />
+        <hr width="70%" />
+        <br />
+        <LectureCardComponent />
+        <hr width="70%" />
+        <br />
+        <LectureCardComponent />
       </div>
     );
   }

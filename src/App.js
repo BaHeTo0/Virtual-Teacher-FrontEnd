@@ -4,15 +4,14 @@ import NavBarContainer from "./containers/NavBarContainer/NavBarContainer";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap-css-only/css/bootstrap.min.css";
 import "mdbreact/dist/css/mdb.css";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, withRouter } from "react-router-dom";
 import HomeContainer from "./containers/HomeContainer/HomeContainer";
 import CoursesContainer from "./containers/CoursesContainer/CoursesContainer";
 import FooterContainer from "./containers/FooterContainer/FooterContainer";
 import axios from "axios";
-import LoginModalComponent from "./components/LoginModalComponent/LoginModalComponent";
-import PrivateRoute from "./PrivateRoute";
 import CourseContainer from "./containers/CourseContainer/CourseContainer";
 import ProfilePageContainer from "./containers/ProfilePageContainer/ProfilePageContainer";
+import NotFoundContainer from "./containers/NotFoundContainer/NotFoundContainer";
 
 class App extends Component {
   constructor(props) {
@@ -47,6 +46,8 @@ class App extends Component {
     this.authHandler("Student", false);
     this.authHandler("Teacher", false);
     this.authHandler("Admin", false);
+
+    this.props.history.push("/");
   };
 
   componentDidMount() {
@@ -79,6 +80,14 @@ class App extends Component {
     return (
       <div className="App">
         <Route
+            path="/profile"
+            render={routeProps => (
+            <ProfilePageContainer 
+              {...routeProps}
+              authInfo={this.state}
+            />)}
+          />
+        <Route
           render={routeProps => (
             <NavBarContainer
               {...routeProps}
@@ -88,42 +97,44 @@ class App extends Component {
             />
           )}
         />
-        <Switch>
-          <Route
-            path="/profile"
-            render={routeProps => (
-            <ProfilePageContainer 
-              {...routeProps}
-              authInfo={this.state}
-            />)}
-          />
-          <Route
-            path="/course/:id"
-            render={routeProps => (
-              <CourseContainer
-                {...routeProps}
-                authInfo={this.state}
-                authHandler={this.authHandler}
-              />
-            )}
-          />
-          <Route path="/courses" component={CoursesContainer} />
-          {/* <PrivateRoute path="/course" authInfo={this.state} component={CourseContainer} /> */}
-          <Route
-            path="/"
-            render={routeProps => (
-              <HomeContainer
-                {...routeProps}
-                authInfo={this.state}
-                authHandler={this.authHandler}
-              />
-            )}
-          />
-        </Switch>
+        <div className="dynamic-container">
+          <Switch>
+            <Route
+              path="/course/:id"
+              render={routeProps => (
+                <CourseContainer
+                  {...routeProps}
+                  authInfo={this.state}
+                  authHandler={this.authHandler}
+                />
+              )}
+            />
+            <Route
+              path="/courses"
+              render={routeProps => (
+                <CoursesContainer {...routeProps} authInfo={this.state} />
+              )}
+            />
+
+            <Route path="/404" component={NotFoundContainer} />
+
+            <Route
+              path="/"
+              render={routeProps => (
+                <HomeContainer
+                  {...routeProps}
+                  authInfo={this.state}
+                  authHandler={this.authHandler}
+                />
+              )}
+            />
+          </Switch>
+        </div>
+
         <FooterContainer />
       </div>
     );
   }
 }
 
-export default App;
+export default withRouter(App);

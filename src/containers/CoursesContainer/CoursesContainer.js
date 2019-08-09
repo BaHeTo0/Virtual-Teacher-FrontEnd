@@ -19,7 +19,7 @@ class CoursesContainer extends Component {
   }
 
   componentDidMount() {
-    Object.keys(this.state).map((key, index) => {
+    Object.keys(this.state).forEach((key, index) => {
       axios
         .get(`http://localhost:8080/api/courses/topic/${index + 1}?size=4`)
         .then(response => {
@@ -38,42 +38,60 @@ class CoursesContainer extends Component {
         <MDBContainer className="mx-auto my-1">
           <h3>Top courses in Business</h3>
           <br />
-          <CourseCardsContainer courses={this.state.courses1} />
+          <CourseCardsContainer
+            authInfo={this.props.authInfo}
+            courses={this.state.courses1}
+          />
         </MDBContainer>
         <MDBContainer className="mx-auto my-1">
           <br />
           <hr />
           <h3>Top courses in Design</h3>
           <br />
-          <CourseCardsContainer courses={this.state.courses2} />
+          <CourseCardsContainer
+            authInfo={this.props.authInfo}
+            courses={this.state.courses2}
+          />
         </MDBContainer>
         <MDBContainer className="mx-auto my-1">
           <br />
           <hr />
           <h3>Top courses in Development</h3>
           <br />
-          <CourseCardsContainer courses={this.state.courses3} />
+          <CourseCardsContainer
+            authInfo={this.props.authInfo}
+            courses={this.state.courses3}
+          />
         </MDBContainer>
         <MDBContainer className="mx-auto my-1">
           <br />
           <hr />
           <h3>Top courses in Finance&amp;Accounting</h3>
           <br />
-          <CourseCardsContainer courses={this.state.courses4} />
+          <CourseCardsContainer
+            authInfo={this.props.authInfo}
+            courses={this.state.courses4}
+          />
         </MDBContainer>
         <MDBContainer className="mx-auto my-1">
           <br />
           <hr />
           <h3>Top courses in Health&amp;Fitness</h3>
           <br />
-          <CourseCardsContainer courses={this.state.courses5} />
+          <CourseCardsContainer
+            authInfo={this.props.authInfo}
+            courses={this.state.courses5}
+          />
         </MDBContainer>
         <MDBContainer className="mx-auto my-1">
           <br />
           <hr />
           <h3>Top courses in IT&amp;Software</h3>
           <br />
-          <CourseCardsContainer courses={this.state.courses6} />
+          <CourseCardsContainer
+            authInfo={this.props.authInfo}
+            courses={this.state.courses6}
+          />
         </MDBContainer>
       </div>
     );
