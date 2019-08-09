@@ -4,7 +4,7 @@ import NavBarContainer from "./containers/NavBarContainer/NavBarContainer";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap-css-only/css/bootstrap.min.css";
 import "mdbreact/dist/css/mdb.css";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, withRouter } from "react-router-dom";
 import HomeContainer from "./containers/HomeContainer/HomeContainer";
 import CoursesContainer from "./containers/CoursesContainer/CoursesContainer";
 import FooterContainer from "./containers/FooterContainer/FooterContainer";
@@ -45,6 +45,8 @@ class App extends Component {
     this.authHandler("Student", false);
     this.authHandler("Teacher", false);
     this.authHandler("Admin", false);
+
+    this.props.history.push("/");
   };
 
   componentDidMount() {
@@ -98,7 +100,12 @@ class App extends Component {
                 />
               )}
             />
-            <Route path="/courses" component={CoursesContainer} />
+            <Route
+              path="/courses"
+              render={routeProps => (
+                <CoursesContainer {...routeProps} authInfo={this.state} />
+              )}
+            />
 
             <Route path="/404" component={NotFoundContainer} />
 
@@ -121,4 +128,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withRouter(App);

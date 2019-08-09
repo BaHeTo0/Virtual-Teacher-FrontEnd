@@ -5,6 +5,8 @@ import axios from "axios";
 import StarRatings from "react-star-ratings";
 import ReactMarkDown from "react-markdown";
 import { Redirect } from "react-router";
+import LectureCardComponent from "../../components/LectureCardComponent/LectureCardComponent";
+const removeMd = require("remove-markdown");
 
 class CourseContainer extends Component {
   constructor(props) {
@@ -57,10 +59,18 @@ class CourseContainer extends Component {
             />
             <p>{this.state.courseData.topic.name}</p>
             <div className="short-desc-container">
-              <ReactMarkDown source={this.state.courseData.description} />
+              {removeMd(this.state.courseData.description)}
             </div>
             <br />
             <MDBBtn>Enroll</MDBBtn>
+            <br />
+
+            <h5>
+              Created by{" "}
+              {this.state.courseData.author.firstName +
+                " " +
+                this.state.courseData.author.lastName}
+            </h5>
           </MDBCol>
           <MDBCol md="4">
             <img
@@ -73,11 +83,18 @@ class CourseContainer extends Component {
 
         <hr />
         <h1>Description of the course</h1>
-        {this.state.courseData.description}
+        <ReactMarkDown>{this.state.courseData.description}</ReactMarkDown>
 
         <hr />
 
         <h1>Lectures</h1>
+        <LectureCardComponent />
+        <hr width="10%"/>
+        <LectureCardComponent />
+        <hr width="10%"/>
+        <LectureCardComponent />
+        <hr width="10%"/>
+        <LectureCardComponent />
       </div>
     );
   }

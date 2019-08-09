@@ -5,8 +5,8 @@
 
 .CourseContainer .short-desc-container {
   overflow: hidden;
-  line-height: 1;
   display: -webkit-box;
   -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;  
+  -webkit-box-orient: vertical;
+  width: 75%;
 }

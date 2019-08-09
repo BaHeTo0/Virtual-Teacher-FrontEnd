@@ -7,6 +7,7 @@ import {
   MDBCardTitle,
   MDBCardText
 } from "mdbreact";
+import {Link} from 'react-router-dom';
 
 const removeMd = require("remove-markdown");
 
@@ -19,7 +20,7 @@ class CourseCardComponent extends Component {
     if (this.props.authInfo.authToken.length > 1)
       cardLink = (
         <MDBCardText className="bottom-right">
-          <a href={"/course/" + this.props.course.id}>Go to course -></a>
+          <Link to={"/course/" + this.props.course.id}>Go to course -></Link>
         </MDBCardText>
       );
 
