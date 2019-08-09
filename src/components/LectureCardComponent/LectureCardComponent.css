@@ -10,6 +10,11 @@
     margin-top:3rem;
 }
 
+.img-thumbnail
+{
+  max-height: 300px;
+}
+
 .react-thumbnail-generator img{
   width:80%;
 }

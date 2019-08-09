@@ -1,12 +1,38 @@
 import React, { Component } from "react";
 import { MDBRow, MDBCol, MDBBtn } from "mdbreact";
 import "./LectureCardComponent.css";
-import ReactPlayer from "react-player";
 import VideoThumbnail from "react-video-thumbnail";
+import axios from "axios";
 
 class LectureCardComponent extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      userLectureData: null
+    };
+  }
+
+  componentDidMount() {
+    let config = {
+      headers: {
+        Authorization: "Bearer " + this.props.authInfo.authToken
+      }
+    };
+
+    axios
+      .get(
+        `http://localhost:8080/api/lectures/`,
+        config
+      )
+      .then(response => {
+        console.log(response.data);
+        this.setState({ courseData: response.data });
+      })
+      .catch(error => {
+        console.log(error.response);
+        this.setState({ redirect: true });
+      });
   }
 
   render() {
@@ -14,36 +40,18 @@ class LectureCardComponent extends Component {
       <div className="LectureCardComponent">
         <MDBRow>
           <MDBCol md="4">
-            {/* <img
-              src="https://via.placeholder.com/220x180"
-              className="rounded img-thumbnail"
-              alt=""
-            /> */}
-            {/* <ReactPlayer url="https://www.youtube.com/watch?v=GlvlgmjMi98" height="220px" width="100%" light/> */}
-            <VideoThumbnail
-              videoUrl="http://localhost:8080/api/videos/1"
-            />
+            <VideoThumbnail videoUrl="http://localhost:8080/api/videos/1" />
           </MDBCol>
           <MDBCol md="6">
-            <h3>Lecture Name</h3>
+            <h3>{this.props.lecture.name}</h3>
 
             <div className="lecture-description">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Vestibulum euismod neque ac diam ornare, at tincidunt lectus
-              vestibulum. Sed viverra magna in ex scelerisque, sed viverra
-              tellus tincidunt. Maecenas sem risus, consequat sed purus quis,
-              sollicitudin luctus neque. Aliquam molestie non mi nec bibendum.
-              In at ante eu erat dapibus eleifend id a sem. Donec molestie,
-              neque vitae laoreet semper, odio tellus laoreet nisi, ut
-              sollicitudin mauris ante in mauris. Maecenas eu metus id lorem
-              accumsan ultricies non id eros. Donec sit amet mi quis justo
-              aliquam gravida ac eget ex. Suspendisse malesuada velit a massa
-              pellentesque, ut tempor elit gravida.
+              {this.props.lecture.description}
             </div>
           </MDBCol>
           <MDBCol md="2">
             <div className="align-baseline">
-              <MDBBtn>Enroll</MDBBtn>
+              <MDBBtn className="align-middle">Watch</MDBBtn>
             </div>
           </MDBCol>
         </MDBRow>

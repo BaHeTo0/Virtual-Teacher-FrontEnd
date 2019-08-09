@@ -88,16 +88,17 @@ class CourseContainer extends Component {
         <hr />
 
         <h1>Lectures</h1>
-        <LectureCardComponent />
-        <hr width="70%" />
         <br />
-        <LectureCardComponent />
-        <hr width="70%" />
-        <br />
-        <LectureCardComponent />
-        <hr width="70%" />
-        <br />
-        <LectureCardComponent />
+        {this.state.courseData.lectures.map(element => {
+          console.log(element);
+          return (
+            <React.Fragment key={element.id}>
+              <LectureCardComponent authInfo={this.props.authInfo} lecture={element} key={element.id} />
+              <hr width="70%" />
+              <br />
+            </React.Fragment>
+          );
+        })}
       </div>
     );
   }
