@@ -1,5 +1,5 @@
 import React from "react";
-import { MDBContainer, MDBCol, MDBRow, MDBBtn } from "mdbreact";
+import { MDBBtn } from "mdbreact";
 import axios from "axios";
 
 class ProfileDetailsComponent extends React.Component {
@@ -11,6 +11,9 @@ class ProfileDetailsComponent extends React.Component {
       lastName: props.profile.lastName,
       email: props.profile.email,
 
+      statusMessage: "",
+      statusType: "",
+
       changes: {
         firstName: false,
         lastName: false,
@@ -20,6 +23,8 @@ class ProfileDetailsComponent extends React.Component {
   }
 
   onChange = event => {
+    console.log(event.target.id);
+
     this.setState({
       [event.target.id]: event.target.value
     });
@@ -42,34 +47,19 @@ class ProfileDetailsComponent extends React.Component {
     }
   };
 
-  getChanges = () => {
-    let changes = {
-      firstName: this.props.profile.firstName,
-      lastName: this.props.profile.lastName,
-      email: this.props.profile.email
-    };
-
-    if (this.state.changes.firstName) {
-      changes.firstName = this.state.firstName;
-    }
-    if (this.state.changes.lastName) {
-      changes.lastName = this.state.lastName;
-    }
-    if (this.state.changes.email) {
-      changes.email = this.state.email;
-    }
-
-    return changes;
-  };
-
   onClick = event => {
-    let config = {
+    const config = {
       headers: {
         Authorization: "Bearer " + this.props.authInfo.authToken
       }
     };
 
-    let changes = this.getChanges();
+    const data = {
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
+      email: this.state.email
+    };
+
     console.log(this.props);
 
     axios
@@ -77,7 +67,7 @@ class ProfileDetailsComponent extends React.Component {
         `http://localhost:8080/api/users/${
           this.props.authInfo.userId
         }/updateInfo`,
-        this.getChanges(),
+        data,
         config
       )
       .then(response => {
@@ -114,43 +104,38 @@ class ProfileDetailsComponent extends React.Component {
     }
 
     return (
-      <MDBCol>
-        <MDBRow>
-          <p className="text-left font-weight-bold">Profile Details</p>
-        </MDBRow>
-        <MDBRow>
-          <label>First Name</label>
-        </MDBRow>
-        <MDBRow>
+      <div className="ProfileDetailsComponent">
+        <form>
+          <p className="h4 text-center mb-4">Profile details</p>
+          <label className="grey-text">First Name</label>
           <input
-            type="text"
             id="firstName"
-            placeholder={this.props.profile.firstName}
+            type="text"
+            className="form-control"
+            value={this.state.firstName}
             onChange={this.onChange}
           />
-        </MDBRow>
-        <MDBRow>
-          <label>Last Name</label>
-        </MDBRow>
-        <MDBRow>
+          <br />
+          <label className="grey-text">Last Name</label>
           <input
             id="lastName"
-            placeholder={this.props.profile.lastName}
+            type="text"
+            className="form-control"
+            value={this.state.lastName}
             onChange={this.onChange}
           />
-        </MDBRow>
-        <MDBRow>
-          <label>Email</label>
-        </MDBRow>
-        <MDBRow>
+          <br />
+          <label className="grey-text">Email</label>
           <input
             id="email"
-            placeholder={this.props.profile.email}
+            type="email"
+            className="form-control"
+            value={this.state.email}
             onChange={this.onChange}
           />
-        </MDBRow>
-        {saveBtn}
-      </MDBCol>
+          <div className="text-center mt-4">{saveBtn}</div>
+        </form>
+      </div>
     );
   }
 }

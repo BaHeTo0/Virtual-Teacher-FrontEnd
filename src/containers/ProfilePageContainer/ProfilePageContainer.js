@@ -1,29 +1,18 @@
 import React from "react";
 import ProfileCardComponent from "../../components/Profile/ProfileCard/ProfileCardComponent";
-import { MDBContainer, MDBCol, MDBRow, MDBInput } from "mdbreact";
+import { MDBContainer, MDBCol, MDBRow, MDBBtn,MDBBtnGroup } from "mdbreact";
 import ProfileDetailsComponent from "../../components/Profile/ProfileDetails/ProfileDetailsComponent";
 import CourseCardsContainer from "../CourseCardsContainer/CourseCardsContainer";
 import axios from "axios";
+import "./ProfilePageContainer.css";
 
 class ProfilePageContainer extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      profile: {
-        picture: {
-          filePath:
-            "https://3c1703fe8d.site.internapcdn.net/newman/csz/news/800/2019/ofalltheforc.jpg"
-        },
-        role: "Teacher",
-        firstName: "Ivaan",
-        lastName: "AndHisLastName",
-        email: "student@email.com",
-
-        rightSideOption: 0,
-        enrolledCourses: [],
-        createdCourses: []
-      }
+      profile: null,
+      rightSideOption: 0
     };
   }
 
@@ -39,15 +28,7 @@ class ProfilePageContainer extends React.Component {
       .then(response => {
         console.log(response.data);
         this.setState({
-          profile: {
-            picture: response.data.picture,
-            firstName: response.data.firstName,
-            lastName: response.data.lastName,
-            email: response.data.email,
-
-            enrolledCourses: response.data.enrolledCourses,
-            createdCourses: response.data.createdCourses
-          }
+          profile: response.data
         });
       })
       .catch(error => {
@@ -62,9 +43,10 @@ class ProfilePageContainer extends React.Component {
   };
 
   render() {
-    console.log(this.state);
-
     let rightSide;
+
+    if (this.state.profile === null) return null;
+
     switch (this.state.rightSideOption) {
       case 0:
         rightSide = (
@@ -75,20 +57,20 @@ class ProfilePageContainer extends React.Component {
         );
         break;
       case 1:
-        // rightSide = (
-        //   <CourseCardsContainer
-        //     courses={this.state.profile.enrolledCourses}
-        //     authInfo={this.props.authInfo}
-        //   />
-        // );
+        rightSide = (
+          <CourseCardsContainer
+            courses={this.state.profile.enrolledCourses}
+            authInfo={this.props.authInfo}
+          />
+        );
         break;
       case 2:
-        // rightSide = (
-        //   <CourseCardsContainer
-        //     courses={this.state.profile.createdCourses}
-        //     authInfo={this.props.authInfo}
-        //   />
-        // );
+        rightSide = (
+          <CourseCardsContainer
+            courses={this.state.profile.createdCourses}
+            authInfo={this.props.authInfo}
+          />
+        );
         break;
       default:
         rightSide = (
@@ -100,37 +82,42 @@ class ProfilePageContainer extends React.Component {
     }
 
     return (
-      <MDBContainer>
-        <MDBRow>
-          <MDBCol>
-            <ProfileCardComponent
-              profile={this.state.profile}
-              authInfo={this.props.authInfo}
-            />
-            <MDBContainer className="mt-5">
-              <MDBInput
-                onClick={this.onClick(0)}
-                checked={this.state.rightSideOption === 0 ? true : false}
-                label="Profile Details"
-                type="radio"
+      <div className="ProfilePageContainer">
+        <MDBContainer>
+          <MDBRow>
+            <MDBCol lg="4">
+              <ProfileCardComponent
+                profile={this.state.profile}
+                authInfo={this.props.authInfo}
               />
-              <MDBInput
-                onClick={this.onClick(1)}
-                checked={this.state.rightSideOption === 1 ? true : false}
-                label="Enrolled Courses"
-                type="radio"
-              />
-              <MDBInput
-                onClick={this.onClick(2)}
-                checked={this.state.rightSideOption === 2 ? true : false}
-                label="Created Courses"
-                type="radio"
-              />
-            </MDBContainer>
-          </MDBCol>
-          <MDBCol>{rightSide}</MDBCol>
-        </MDBRow>
-      </MDBContainer>
+              <MDBBtnGroup vertical>
+                <MDBBtn
+                size="md"
+                  onClick={this.onClick(0)}
+                  checked={this.state.rightSideOption === 0}
+                >
+                  Profile Details
+                </MDBBtn>
+                <MDBBtn
+                size="md"
+                  onClick={this.onClick(1)}
+                  checked={this.state.rightSideOption === 1}
+                >
+                  Enrolled Courses
+                </MDBBtn>
+                <MDBBtn
+                size="md"
+                  onClick={this.onClick(2)}
+                  checked={this.state.rightSideOption === 2}
+                >
+                  Created Courses
+                </MDBBtn>
+              </MDBBtnGroup>
+            </MDBCol>
+            <MDBCol lg="8">{rightSide}</MDBCol>
+          </MDBRow>
+        </MDBContainer>
+      </div>
     );
   }
 }
