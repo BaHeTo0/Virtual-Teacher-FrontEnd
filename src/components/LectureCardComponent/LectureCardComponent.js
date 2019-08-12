@@ -24,7 +24,12 @@ class LectureCardComponent extends Component {
 
       videoModal: false,
       uploadModal: false,
-      canWatch: false
+      canWatch: false,
+
+      selectedFile: null,
+      selectedFileText: "",
+      fileStatus: "",
+      fileStatusType: ""
     };
   }
 
@@ -35,8 +40,6 @@ class LectureCardComponent extends Component {
   }
 
   fetchLectureData = () => {
-    console.log("fetch");
-
     let config = {
       headers: {
         Authorization: "Bearer " + this.props.authInfo.authToken
@@ -73,6 +76,42 @@ class LectureCardComponent extends Component {
       })
       .catch(error => {
         console.log(error.response);
+      });
+  };
+
+  fileChangeHandler = event => {
+    this.setState({
+      [event.target.id]: event.target.value,
+      selectedFile: event.target.files[0]
+    });
+  };
+
+  uploadHandler = () => {
+    let bodyFormData = new FormData();
+    bodyFormData.append("file", this.state.selectedFile);
+    bodyFormData.append("lectureId", this.state.lectureData.id);
+
+    let config = {
+      headers: {
+        Authorization: "Bearer " + this.props.authInfo.authToken
+      }
+    };
+
+    axios
+      .post("http://localhost:8080/api/assignments", bodyFormData, config)
+      .then(response => {
+        console.log(response);
+        this.setState({
+          fileStatus: "File uploaded successfully",
+          fileStatusType: "good"
+        });
+      })
+      .catch(error => {
+        console.log(error.response);
+        this.setState({
+          fileStatus: "Couldn't upload file",
+          fileStatusType: "bad"
+        });
       });
   };
 
@@ -142,6 +181,20 @@ class LectureCardComponent extends Component {
       }
     }
 
+    let statusText;
+
+    if (this.state.fileStatus !== "") {
+      statusText = (
+        <p
+          className={
+            this.state.fileStatusType === "bad" ? "red-text" : "green-text"
+          }
+        >
+          {this.state.fileStatus}
+        </p>
+      );
+    }
+
     return (
       <div className="LectureCardComponent">
         <MDBRow>
@@ -195,7 +248,7 @@ class LectureCardComponent extends Component {
           toggle={this.toggleUploadModal}
         >
           <MDBModalHeader toggle={this.toggleUploadModal}>
-            Upload assignment
+            Upload a file
           </MDBModalHeader>
           <MDBModalBody>
             <div className="input-group">
@@ -208,16 +261,22 @@ class LectureCardComponent extends Component {
                 <input
                   type="file"
                   className="custom-file-input"
-                  id="assignmentInput"
+                  id="selectedFileText"
+                  onChange={this.fileChangeHandler}
                 />
-                <label className="custom-file-label" htmlFor="assignmentInput">
-                  Choose file
+                <label className="custom-file-label" htmlFor="selectedFileText">
+                  {this.state.selectedFileText}
                 </label>
               </div>
             </div>
+            {statusText}
           </MDBModalBody>
           <MDBModalFooter>
-            <MDBBtn color="primary" onClick={this.toggleUploadModal}>
+            <MDBBtn
+              color="primary"
+              onClick={this.uploadHandler}
+              disabled={this.state.selectedFile === ""}
+            >
               Upload
             </MDBBtn>
             <MDBBtn color="secondary" onClick={this.toggleUploadModal}>
