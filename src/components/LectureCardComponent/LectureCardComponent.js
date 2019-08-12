@@ -28,14 +28,20 @@ class LectureCardComponent extends Component {
     };
   }
 
-  componentDidMount() {
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.isEnrolled !== this.props.isEnrolled) {
+      this.fetchLectureData();
+    }
+  }
+
+  fetchLectureData = () => {
+    console.log("fetch");
+
     let config = {
       headers: {
         Authorization: "Bearer " + this.props.authInfo.authToken
       }
     };
-
-    console.log(this.props.courseId);
 
     axios
       .get(
@@ -68,6 +74,10 @@ class LectureCardComponent extends Component {
       .catch(error => {
         console.log(error.response);
       });
+  };
+
+  componentDidMount() {
+    this.fetchLectureData();
   }
 
   toggleVideoModal = () => {
@@ -79,15 +89,37 @@ class LectureCardComponent extends Component {
   };
 
   render() {
-    let watchButton;
+    let watchButton = (
+      <MDBBtn
+        color="primary"
+        onClick={this.toggleVideoModal}
+        disabled={!this.state.canWatch}
+      >
+        Watch
+      </MDBBtn>
+    );
 
-    if (this.state.canWatch) {
-      watchButton = (
-        <MDBBtn color="primary" onClick={this.toggleVideoModal}>
-          Watch
-        </MDBBtn>
-      );
-    }
+    let uploadButton = (
+      <MDBBtn
+        size="sm"
+        gradient="purple"
+        onClick={this.toggleUploadModal}
+        disabled={!this.state.canWatch}
+      >
+        Upload Assignment
+      </MDBBtn>
+    );
+
+    let taskButton = (
+      <MDBBtn
+        size="sm"
+        gradient="purple"
+        href={this.props.lecture.task.filePath}
+        disabled={!this.state.canWatch}
+      >
+        View Task
+      </MDBBtn>
+    );
 
     let gradeText;
 
@@ -122,20 +154,8 @@ class LectureCardComponent extends Component {
             <div className="lecture-description">
               {this.props.lecture.description}
             </div>
-            <MDBBtn
-              size="sm"
-              gradient="purple"
-              onClick={this.toggleUploadModal}
-            >
-              Upload Assignment
-            </MDBBtn>
-            <MDBBtn
-              size="sm"
-              gradient="purple"
-              href={this.props.lecture.task.filePath}
-            >
-              View Task
-            </MDBBtn>
+            {uploadButton}
+            {taskButton}
           </MDBCol>
           <MDBCol md="2" style={{ textAlign: "center" }}>
             {watchButton}
@@ -172,14 +192,34 @@ class LectureCardComponent extends Component {
 
         <MDBModal
           isOpen={this.state.uploadModal}
-          toggle={this.uploadModal}
-          size="lg"
+          toggle={this.toggleUploadModal}
         >
           <MDBModalHeader toggle={this.toggleUploadModal}>
-            {this.props.lecture.name}
+            Upload assignment
           </MDBModalHeader>
-          <MDBModalBody />
+          <MDBModalBody>
+            <div className="input-group">
+              <div className="input-group-prepend">
+                <span className="input-group-text" id="inputGroupFileAddon01">
+                  Upload
+                </span>
+              </div>
+              <div className="custom-file">
+                <input
+                  type="file"
+                  className="custom-file-input"
+                  id="assignmentInput"
+                />
+                <label className="custom-file-label" htmlFor="assignmentInput">
+                  Choose file
+                </label>
+              </div>
+            </div>
+          </MDBModalBody>
           <MDBModalFooter>
+            <MDBBtn color="primary" onClick={this.toggleUploadModal}>
+              Upload
+            </MDBBtn>
             <MDBBtn color="secondary" onClick={this.toggleUploadModal}>
               Close
             </MDBBtn>

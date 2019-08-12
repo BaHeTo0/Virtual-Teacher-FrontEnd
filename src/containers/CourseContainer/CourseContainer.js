@@ -15,10 +15,13 @@ class CourseContainer extends Component {
     this.state = {
       courseData: null,
       isEnrolled: false,
-      redirect: false
+      redirect: false,
+      out2: props.isEnrolled
     };
   }
 
+
+  
   componentDidMount() {
     let config = {
       headers: {
@@ -35,7 +38,7 @@ class CourseContainer extends Component {
         this.setState({
           courseData: response.data,
           isEnrolled: response.data.users.some(
-            user => user.id == this.props.authInfo.userId
+            user => user.id === parseFloat(this.props.authInfo.userId)
           )
         });
       })
@@ -64,13 +67,12 @@ class CourseContainer extends Component {
         this.setState({
           courseData: response.data,
           isEnrolled: response.data.users.some(
-            user => user.id == this.props.authInfo.userId
+            user => user.id === parseFloat(this.props.authInfo.userId)
           )
         });
       })
       .catch(error => {
         console.log(error.response);
-        alert(error.response.message);
       });
   };
 
@@ -139,6 +141,7 @@ class CourseContainer extends Component {
                   lecture={element}
                   key={element.id}
                   courseId={this.state.courseData.id}
+                  isEnrolled={this.state.isEnrolled}
                 />
                 <hr width="70%" />
                 <br />
