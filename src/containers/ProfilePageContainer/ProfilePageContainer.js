@@ -5,6 +5,7 @@ import ProfileDetailsComponent from "../../components/Profile/ProfileDetails/Pro
 import CourseCardsComponent from "../../components/CourseCardsComponent/CourseCardsComponent";
 import axios from "axios";
 import "./ProfilePageContainer.css";
+import CourseListComponent from "../../components/CourseListComponent/CourseListComponent";
 
 class ProfilePageContainer extends React.Component {
   constructor(props) {
@@ -26,6 +27,7 @@ class ProfilePageContainer extends React.Component {
     axios
       .get(`http://localhost:8080/api/users/me`, config)
       .then(response => {
+        console.log(response.data);
         this.setState({
           profile: response.data
         });
@@ -42,6 +44,20 @@ class ProfilePageContainer extends React.Component {
   };
 
   render() {
+    let createdCoursesButton;
+
+    if (this.props.authInfo.Teacher === true) {
+      createdCoursesButton = (
+        <MDBBtn
+          size="md"
+          onClick={this.onClick(2)}
+          checked={this.state.rightSideOption === 2}
+        >
+          Created Courses
+        </MDBBtn>
+      );
+    }
+
     let rightSide;
 
     if (this.state.profile === null) return null;
@@ -59,10 +75,19 @@ class ProfilePageContainer extends React.Component {
         break;
       case 1:
         rightSide = (
-          <CourseCardsComponent
-            courses={this.state.profile.enrolledCourses}
-            authInfo={this.props.authInfo}
-          />
+          <React.Fragment>
+            <CourseListComponent
+              courses={this.state.profile.enrolledCourses}
+              authInfo={this.props.authInfo}
+              tableName="Ongoing Courses"
+            />
+            <br />
+            <CourseListComponent
+              courses={this.state.profile.finishedCourses}
+              authInfo={this.props.authInfo}
+              tableName="Finished Courses"
+            />
+          </React.Fragment>
         );
         break;
       case 2:
@@ -104,15 +129,9 @@ class ProfilePageContainer extends React.Component {
                   onClick={this.onClick(1)}
                   checked={this.state.rightSideOption === 1}
                 >
-                  Enrolled Courses
+                  My Courses
                 </MDBBtn>
-                <MDBBtn
-                  size="md"
-                  onClick={this.onClick(2)}
-                  checked={this.state.rightSideOption === 2}
-                >
-                  Created Courses
-                </MDBBtn>
+                {createdCoursesButton}
               </MDBBtnGroup>
             </MDBCol>
             <MDBCol lg="8">{rightSide}</MDBCol>

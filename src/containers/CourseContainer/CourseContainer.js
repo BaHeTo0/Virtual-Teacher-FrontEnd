@@ -15,13 +15,12 @@ class CourseContainer extends Component {
     this.state = {
       courseData: null,
       isEnrolled: false,
+      isFinished: false,
       redirect: false,
       out2: props.isEnrolled
     };
   }
 
-
-  
   componentDidMount() {
     let config = {
       headers: {
@@ -38,6 +37,9 @@ class CourseContainer extends Component {
         this.setState({
           courseData: response.data,
           isEnrolled: response.data.users.some(
+            user => user.id === parseFloat(this.props.authInfo.userId)
+          ),
+          isFinished: response.data.graduatedUsers.some(
             user => user.id === parseFloat(this.props.authInfo.userId)
           )
         });
@@ -84,7 +86,7 @@ class CourseContainer extends Component {
 
     let enrollButton;
 
-    if (!this.state.isEnrolled) {
+    if (!this.state.isEnrolled && !this.state.isFinished) {
       enrollButton = <MDBBtn onClick={this.enrollHandler}>Enroll</MDBBtn>;
     }
 
@@ -142,6 +144,7 @@ class CourseContainer extends Component {
                   key={element.id}
                   courseId={this.state.courseData.id}
                   isEnrolled={this.state.isEnrolled}
+                  isFinished={this.state.isFinished}
                 />
                 <hr width="70%" />
                 <br />

@@ -16,6 +16,8 @@ class ProfileDetailsComponent extends React.Component {
       firstName: props.profile.firstName,
       lastName: props.profile.lastName,
       email: props.profile.email,
+      password: "",
+      confirmPassword: "",
 
       statusMessage: "",
       statusType: "",
@@ -23,7 +25,9 @@ class ProfileDetailsComponent extends React.Component {
       formErrors: {
         firstName: "",
         lastName: "",
-        email: ""
+        email: "",
+        password: "",
+        confirmPassword: ""
       },
 
       changes: {
@@ -71,6 +75,12 @@ class ProfileDetailsComponent extends React.Component {
           passwordRegex.test(value) && value.length > 0
             ? ""
             : "Minimum eight characters, at least one letter and one number";
+        break;
+      case "confirmPassword":
+        formErrors.confirmPassword =
+          value === this.state.password && value.length > 0
+            ? ""
+            : "Passwords must match";
         break;
       default:
         break;
@@ -191,10 +201,20 @@ class ProfileDetailsComponent extends React.Component {
       );
     }
 
+    let passwordButton = <MDBBtn disabled={false}>Change password</MDBBtn>;
+
+    if (this.formValid(this.state.formErrors)) {
+      passwordButton = (
+        <MDBBtn disabled={!this.formValid(this.state.formErrors)}>
+          Change password
+        </MDBBtn>
+      );
+    }
+
     return (
       <div className="ProfileDetailsComponent">
         <form>
-          <p className="h4 text-center mb-4">Profile details</p>
+          <h3>Profile details</h3>
           <label>First Name</label>
           <input
             type="text"
@@ -242,6 +262,45 @@ class ProfileDetailsComponent extends React.Component {
           <div className="invalid-feedback">{this.state.formErrors.email}</div>
           <div className="text-center mt-4">{saveBtn}</div>
           {statusMessage}
+        </form>
+
+        <hr />
+
+        <form>
+          <h3>Change password</h3>
+          <label>New password</label>
+          <input
+            type="password"
+            name="password"
+            value={this.state.password}
+            onChange={this.onChange}
+            className={
+              this.state.formErrors.password.length > 1
+                ? "form-control is-invalid"
+                : "form-control"
+            }
+          />
+          <div className="invalid-feedback">
+            {this.state.formErrors.password}
+          </div>
+          <br />
+          <label>Confirm password</label>
+          <input
+            type="password"
+            name="confirmPassword"
+            value={this.state.confirmPassword}
+            onChange={this.onChange}
+            className={
+              this.state.formErrors.confirmPassword.length > 1
+                ? "form-control is-invalid"
+                : "form-control"
+            }
+          />
+          <div className="invalid-feedback">
+            {this.state.formErrors.confirmPassword}
+          </div>
+
+          <div className="text-center mt-4">{passwordButton}</div>
         </form>
       </div>
     );

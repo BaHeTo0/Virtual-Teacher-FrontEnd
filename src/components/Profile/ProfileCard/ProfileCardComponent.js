@@ -5,10 +5,10 @@ import defaultImage from "../../../images/default_profile.jpg";
 class ProfileCardComponent extends React.Component {
   render() {
     let role = "Student";
-    if (this.props.authInfo.Teacher) {
+    if (this.props.authInfo.Teacher === true) {
       role = "Teacher";
     }
-    if (this.props.authInfo.Admin) {
+    if (this.props.authInfo.Admin === true) {
       role = "Admin";
     }
 

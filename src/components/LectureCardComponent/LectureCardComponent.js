@@ -143,7 +143,7 @@ class LectureCardComponent extends Component {
         size="sm"
         gradient="purple"
         onClick={this.toggleUploadModal}
-        disabled={!this.state.canWatch}
+        disabled={!this.state.canWatch || this.props.isFinished}
       >
         Upload Assignment
       </MDBBtn>
@@ -154,7 +154,7 @@ class LectureCardComponent extends Component {
         size="sm"
         gradient="purple"
         href={this.props.lecture.task.filePath}
-        disabled={!this.state.canWatch}
+        disabled={!this.state.canWatch || this.props.isFinished}
       >
         View Task
       </MDBBtn>
