@@ -3,6 +3,7 @@ import "./HomeContainer.css";
 import { MDBContainer, MDBRow, MDBCol } from "mdbreact";
 import CourseCardsContainer from "../CourseCardsContainer/CourseCardsContainer";
 import axios from "axios";
+import openbook from "../../images/open-book.png";
 
 class HomeContainer extends Component {
   constructor(props) {
@@ -42,21 +43,26 @@ class HomeContainer extends Component {
         <MDBContainer>
           <MDBRow>
             <MDBCol lg="8">
-              <h2>Homepage</h2>
-              <h5>The user is not logged in</h5>
+              <h2>Welcome to Virtual Teacher</h2>
+              <h5 className="text-info">Online risk-free educational platform</h5>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-                tristique quam in purus eleifend maximus. Nullam sed magna eget
-                leo consequat faucibus in vitae magna. Quisque ultricies, enim
-                at tempor ornare, lorem orci congue lectus, ut viverra ante
-                lectus a quam. Pellentesque elementum luctus risus, vel pulvinar
-                magna facilisis at. Vivamus sit amet pretium diam. Suspendisse
-                in neque ac orci auctor rutrum.
+                The world's newest selection of courses.
+                Chose from over at least 6 categories of topics and get your
+                education points boosted through the roof. Your friends will be
+                amazed by your new skills and the best part is that, new courses
+                are being uploaded every now and then so there wil always be something
+                new for you to learn.
+              </p>
+              <p>
+                Wait? Did you just mention that you have a unique skill that is facing
+                extinction? Well we've got just the solution for you.
+                Just apply for a teacher and you will be able to upload video courses
+                to teach the world your skills as well!
               </p>
             </MDBCol>
             <MDBCol lg="4">
               <img
-                src="https://via.placeholder.com/220x180"
+                src={openbook}
                 className="rounded"
                 alt=""
               />

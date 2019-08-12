@@ -7,7 +7,7 @@ class CourseCardsContainer extends Component {
   render() {
     let cards = "No courses here";
 
-    if (this.props.courses !== null || this.props.courses !== []) {
+    if (this.props.courses !== null) {
       cards = this.props.courses.map(course => {
         return (
           <MDBCol lg="3" key={course.id}>
