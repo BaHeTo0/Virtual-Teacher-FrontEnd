@@ -80,14 +80,6 @@ class App extends Component {
     return (
       <div className="App">
         <Route
-            path="/profile"
-            render={routeProps => (
-            <ProfilePageContainer 
-              {...routeProps}
-              authInfo={this.state}
-            />)}
-          />
-        <Route
           render={routeProps => (
             <NavBarContainer
               {...routeProps}
@@ -113,6 +105,13 @@ class App extends Component {
               path="/courses"
               render={routeProps => (
                 <CoursesContainer {...routeProps} authInfo={this.state} />
+              )}
+            />
+
+            <Route
+              path="/profile"
+              render={routeProps => (
+                <ProfilePageContainer {...routeProps} authInfo={this.state} />
               )}
             />
 
