@@ -32,7 +32,6 @@ class LoginModalComponent extends Component {
     axios
       .post("http://localhost:8080/api/auth/login", data)
       .then(response => {
-        console.log(response);
         this.props.authHandler("authToken", response.data.token);
         this.props.authHandler("userId", response.data.id);
         this.props.authHandler("firstName", response.data.firstName);

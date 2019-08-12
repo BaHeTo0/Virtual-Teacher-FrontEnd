@@ -14,6 +14,7 @@ class CourseContainer extends Component {
 
     this.state = {
       courseData: null,
+      isEnrolled: false,
       redirect: false
     };
   }
@@ -31,8 +32,12 @@ class CourseContainer extends Component {
         config
       )
       .then(response => {
-        console.log(response.data);
-        this.setState({ courseData: response.data });
+        this.setState({
+          courseData: response.data,
+          isEnrolled: response.data.users.some(
+            user => user.id == this.props.authInfo.userId
+          )
+        });
       })
       .catch(error => {
         console.log(error.response);
@@ -40,11 +45,46 @@ class CourseContainer extends Component {
       });
   }
 
+  enrollHandler = () => {
+    let config = {
+      headers: {
+        Authorization: "Bearer " + this.props.authInfo.authToken
+      }
+    };
+
+    axios
+      .post(
+        `http://localhost:8080/api/courses/enroll?courseId=${
+          this.state.courseData.id
+        }`,
+        null,
+        config
+      )
+      .then(response => {
+        this.setState({
+          courseData: response.data,
+          isEnrolled: response.data.users.some(
+            user => user.id == this.props.authInfo.userId
+          )
+        });
+      })
+      .catch(error => {
+        console.log(error.response);
+        alert(error.response.message);
+      });
+  };
+
   render() {
     if (this.state.redirect === true) {
       return <Redirect to="/404" />;
     }
     if (this.state.courseData === null) return null;
+
+    let enrollButton;
+
+    if (!this.state.isEnrolled) {
+      enrollButton = <MDBBtn onClick={this.enrollHandler}>Enroll</MDBBtn>;
+    }
 
     return (
       <div className="CourseContainer">
@@ -62,7 +102,7 @@ class CourseContainer extends Component {
               {removeMd(this.state.courseData.description)}
             </div>
             <br />
-            <MDBBtn>Enroll</MDBBtn>
+            {enrollButton}
             <br />
 
             <h5>
@@ -89,16 +129,22 @@ class CourseContainer extends Component {
 
         <h1>Lectures</h1>
         <br />
-        {this.state.courseData.lectures.map(element => {
-          console.log(element);
-          return (
-            <React.Fragment key={element.id}>
-              <LectureCardComponent authInfo={this.props.authInfo} lecture={element} key={element.id} />
-              <hr width="70%" />
-              <br />
-            </React.Fragment>
-          );
-        })}
+        {this.state.courseData.lectures
+          .sort((a, b) => a.id - b.id)
+          .map(element => {
+            return (
+              <React.Fragment key={element.id}>
+                <LectureCardComponent
+                  authInfo={this.props.authInfo}
+                  lecture={element}
+                  key={element.id}
+                  courseId={this.state.courseData.id}
+                />
+                <hr width="70%" />
+                <br />
+              </React.Fragment>
+            );
+          })}
       </div>
     );
   }

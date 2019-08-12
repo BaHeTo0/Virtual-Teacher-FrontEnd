@@ -44,7 +44,7 @@ class RegisterModalComponent extends Component {
   registerHandler = event => {
     event.preventDefault();
 
-    if (!this.formaValid(this.state.formErrors)) {
+    if (!this.formValid(this.state.formErrors)) {
       this.setState({ registerError: "Some fields contain errors!" });
       return;
     }
@@ -59,7 +59,6 @@ class RegisterModalComponent extends Component {
     axios
       .post("http://localhost:8080/api/auth/register", data)
       .then(response => {
-        console.log(response);
         this.props.authHandler("authToken", response.data.token);
         this.props.authHandler("userId", response.data.id);
         this.props.authHandler("firstName", response.data.firstName);
@@ -113,13 +112,20 @@ class RegisterModalComponent extends Component {
   dateChangeHandler(selectedDay) {
     let formErrors = this.state.formErrors;
 
-    formErrors.selectedDay =
-      selectedDay === undefined ? "Select a valid date" : "";
+    formErrors.selectedDay = "";
+
+    if (selectedDay !== undefined) {
+      var now = new Date();
+      now.setHours(0, 0, 0, 0);
+      if (selectedDay > now) formErrors.selectedDay = "Select a past date";
+    } else {
+      formErrors.selectedDay = "Select a valid date";
+    }
 
     this.setState({ formErrors, selectedDay });
   }
 
-  formaValid = formErrors => {
+  formValid = formErrors => {
     let valid = true;
 
     Object.values(formErrors).forEach(error => {

@@ -61,7 +61,6 @@ class App extends Component {
       axios
         .post("http://localhost:8080/api/auth/validate", null, config)
         .then(response => {
-          console.log(response);
           this.authHandler("authToken", response.data.token);
           this.authHandler("userId", response.data.id);
           this.authHandler("firstName", response.data.firstName);
@@ -111,7 +110,11 @@ class App extends Component {
             <Route
               path="/profile"
               render={routeProps => (
-                <ProfilePageContainer {...routeProps} authInfo={this.state} />
+                <ProfilePageContainer
+                  authInfo={this.state}
+                  authHandler={this.authHandler}
+                  logoutHandler={this.logoutHandler}
+                />
               )}
             />
 

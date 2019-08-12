@@ -4,7 +4,6 @@ import defaultImage from "../../../images/default_profile.jpg";
 
 class ProfileCardComponent extends React.Component {
   render() {
-
     let role = "Student";
     if (this.props.authInfo.Teacher) {
       role = "Teacher";
@@ -30,9 +29,7 @@ class ProfileCardComponent extends React.Component {
             />
           </MDBRow>
           <MDBRow>
-            <h6>
-              {role}
-            </h6>
+            <h6>{role}</h6>
           </MDBRow>
         </MDBContainer>
       </MDBCol>

@@ -5,16 +5,14 @@
   -webkit-box-orient: vertical;
 }
 
-.lecture-button
-{
-    margin-top:3rem;
+.lecture-button {
+  margin-top: 3rem;
 }
 
-.img-thumbnail
-{
+.img-thumbnail {
   max-height: 300px;
 }
 
-.react-thumbnail-generator img{
-  width:80%;
+.react-thumbnail-generator img {
+  width: 80%;
 }

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./CoursesContainer.css";
-import CourseCardsContainer from "../CourseCardsContainer/CourseCardsContainer";
+import CourseCardsComponent from "../../components/CourseCardsComponent/CourseCardsComponent";
 import { MDBContainer } from "mdbreact";
 import axios from "axios";
 
@@ -27,7 +27,6 @@ class CoursesContainer extends Component {
         })
         .catch(error => {
           console.log(error.response);
-          alert("Couldn't load courses");
         });
     });
   }
@@ -38,7 +37,7 @@ class CoursesContainer extends Component {
         <MDBContainer className="mx-auto my-1">
           <h3>Top courses in Business</h3>
           <br />
-          <CourseCardsContainer
+          <CourseCardsComponent
             authInfo={this.props.authInfo}
             courses={this.state.courses1}
           />
@@ -48,7 +47,7 @@ class CoursesContainer extends Component {
           <hr />
           <h3>Top courses in Design</h3>
           <br />
-          <CourseCardsContainer
+          <CourseCardsComponent
             authInfo={this.props.authInfo}
             courses={this.state.courses2}
           />
@@ -58,7 +57,7 @@ class CoursesContainer extends Component {
           <hr />
           <h3>Top courses in Development</h3>
           <br />
-          <CourseCardsContainer
+          <CourseCardsComponent
             authInfo={this.props.authInfo}
             courses={this.state.courses3}
           />
@@ -68,7 +67,7 @@ class CoursesContainer extends Component {
           <hr />
           <h3>Top courses in Finance&amp;Accounting</h3>
           <br />
-          <CourseCardsContainer
+          <CourseCardsComponent
             authInfo={this.props.authInfo}
             courses={this.state.courses4}
           />
@@ -78,7 +77,7 @@ class CoursesContainer extends Component {
           <hr />
           <h3>Top courses in Health&amp;Fitness</h3>
           <br />
-          <CourseCardsContainer
+          <CourseCardsComponent
             authInfo={this.props.authInfo}
             courses={this.state.courses5}
           />
@@ -88,7 +87,7 @@ class CoursesContainer extends Component {
           <hr />
           <h3>Top courses in IT&amp;Software</h3>
           <br />
-          <CourseCardsContainer
+          <CourseCardsComponent
             authInfo={this.props.authInfo}
             courses={this.state.courses6}
           />

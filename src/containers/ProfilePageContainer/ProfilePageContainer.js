@@ -1,8 +1,8 @@
 import React from "react";
 import ProfileCardComponent from "../../components/Profile/ProfileCard/ProfileCardComponent";
-import { MDBContainer, MDBCol, MDBRow, MDBBtn,MDBBtnGroup } from "mdbreact";
+import { MDBContainer, MDBCol, MDBRow, MDBBtn, MDBBtnGroup } from "mdbreact";
 import ProfileDetailsComponent from "../../components/Profile/ProfileDetails/ProfileDetailsComponent";
-import CourseCardsContainer from "../CourseCardsContainer/CourseCardsContainer";
+import CourseCardsComponent from "../../components/CourseCardsComponent/CourseCardsComponent";
 import axios from "axios";
 import "./ProfilePageContainer.css";
 
@@ -26,7 +26,6 @@ class ProfilePageContainer extends React.Component {
     axios
       .get(`http://localhost:8080/api/users/me`, config)
       .then(response => {
-        console.log(response.data);
         this.setState({
           profile: response.data
         });
@@ -53,12 +52,14 @@ class ProfilePageContainer extends React.Component {
           <ProfileDetailsComponent
             profile={this.state.profile}
             authInfo={this.props.authInfo}
+            authHandler={this.props.authHandler}
+            logoutHandler={this.props.logoutHandler}
           />
         );
         break;
       case 1:
         rightSide = (
-          <CourseCardsContainer
+          <CourseCardsComponent
             courses={this.state.profile.enrolledCourses}
             authInfo={this.props.authInfo}
           />
@@ -66,7 +67,7 @@ class ProfilePageContainer extends React.Component {
         break;
       case 2:
         rightSide = (
-          <CourseCardsContainer
+          <CourseCardsComponent
             courses={this.state.profile.createdCourses}
             authInfo={this.props.authInfo}
           />
@@ -92,21 +93,21 @@ class ProfilePageContainer extends React.Component {
               />
               <MDBBtnGroup vertical>
                 <MDBBtn
-                size="md"
+                  size="md"
                   onClick={this.onClick(0)}
                   checked={this.state.rightSideOption === 0}
                 >
                   Profile Details
                 </MDBBtn>
                 <MDBBtn
-                size="md"
+                  size="md"
                   onClick={this.onClick(1)}
                   checked={this.state.rightSideOption === 1}
                 >
                   Enrolled Courses
                 </MDBBtn>
                 <MDBBtn
-                size="md"
+                  size="md"
                   onClick={this.onClick(2)}
                   checked={this.state.rightSideOption === 2}
                 >

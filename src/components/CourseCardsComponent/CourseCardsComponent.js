@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import "./CourseCardsContainer.css";
+import "./CourseCardsComponent.css";
 import { MDBCol, MDBRow } from "mdbreact";
-import CourseCardComponent from "../../components/CourseCardComponent/CourseCardComponent";
+import CourseCardComponent from "../CourseCardComponent/CourseCardComponent";
 
-class CourseCardsContainer extends Component {
+class CourseCardsComponent extends Component {
   render() {
     let cards = "No courses here";
 
@@ -22,11 +22,11 @@ class CourseCardsContainer extends Component {
     }
 
     return (
-      <div className="CourseCardsContainer">
+      <div className="CourseCardsComponent">
         <MDBRow>{cards}</MDBRow>
       </div>
     );
   }
 }
 
-export default CourseCardsContainer;
+export default CourseCardsComponent;
