@@ -4,7 +4,6 @@ import {
   MDBModal,
   MDBModalHeader,
   MDBModalBody,
-  MDBInput,
   MDBRow,
   MDBCol
 } from "mdbreact";
@@ -18,6 +17,7 @@ class CourseModalComponent extends Component {
     this.state = {
       courseName: "",
       courseDescription: "",
+      courseTopic: 1,
       fileName: "",
       file: null,
 
@@ -26,6 +26,7 @@ class CourseModalComponent extends Component {
       formErrors: {
         courseName: "",
         courseDescription: "",
+        courseTopic: "",
         fileName: ""
       }
     };
@@ -62,10 +63,40 @@ class CourseModalComponent extends Component {
       case "fileName":
         formErrors.fileName = value.length > 1 ? "" : "Add a thumbnail file";
         this.setState({ file: event.target.files[0] });
+        break;
       default:
         break;
     }
     this.setState({ formErrors, [name]: value });
+  };
+
+  addCourseHandler = event => {
+    event.preventDefault();
+    if (!this.formValid(this.state.formErrors)) {
+      this.setState({ error: "Some fields contain errors!" });
+      return;
+    }
+
+    let formData = new FormData();
+    formData.append("name", this.state.courseName);
+    formData.append("topic", this.state.courseTopic);
+    formData.append("description", this.state.courseDescription);
+    formData.append("thumbnailFile", this.state.file);
+
+    let config = {
+      headers: {
+        Authorization: "Bearer " + this.props.authInfo.authToken
+      }
+    };
+
+    axios
+      .post("http://localhost:8080/api/courses", formData, config)
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        this.setState({ error: error.data.message });
+      });
   };
 
   render() {
@@ -76,7 +107,7 @@ class CourseModalComponent extends Component {
           <form
             className="needs-validation"
             noValidate
-            onSubmit={this.registerHandler}
+            onSubmit={this.addCourseHandler}
           >
             <label>Course Name</label>
             <input
@@ -96,7 +127,11 @@ class CourseModalComponent extends Component {
             <br />
 
             <label>Topic</label>
-            <select className="browser-default custom-select">
+            <select
+              onChange={this.changeHandler}
+              className="browser-default custom-select"
+              name="courseTopic"
+            >
               <option value="1" defaultValue>
                 Business
               </option>
@@ -144,15 +179,14 @@ class CourseModalComponent extends Component {
             <MDBRow>
               <MDBCol md="4">
                 <MDBBtn color="primary" type="submit">
-                  Register
+                  Submit
                 </MDBBtn>
               </MDBCol>
               <MDBCol
                 md="8"
                 className="register-error"
                 style={{
-                  display:
-                    this.state.error.length > 1 ? "block" : "hidden"
+                  display: this.state.error.length > 1 ? "block" : "hidden"
                 }}
               >
                 {this.state.error}

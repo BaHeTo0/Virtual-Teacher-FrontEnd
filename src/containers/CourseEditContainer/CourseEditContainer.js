@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "./CourseContainer.css";
 import { MDBBtn, MDBRow, MDBCol } from "mdbreact";
 import axios from "axios";
 import StarRatings from "react-star-ratings";
@@ -7,17 +6,15 @@ import ReactMarkDown from "react-markdown";
 import { Redirect } from "react-router";
 import LectureCardComponent from "../../components/LectureCardComponent/LectureCardComponent";
 const removeMd = require("remove-markdown");
+import "./CourseEditContainer.css";
 
-class CourseContainer extends Component {
+class CourseEditContainer extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      courseData: null,
-      isEnrolled: false,
-      isFinished: false,
-      redirect: false
-    };
+        courseData: null
+      };
   }
 
   componentDidMount() {
@@ -49,48 +46,12 @@ class CourseContainer extends Component {
       });
   }
 
-  enrollHandler = () => {
-    let config = {
-      headers: {
-        Authorization: "Bearer " + this.props.authInfo.authToken
-      }
-    };
-
-    axios
-      .post(
-        `http://localhost:8080/api/courses/enroll?courseId=${
-          this.state.courseData.id
-        }`,
-        null,
-        config
-      )
-      .then(response => {
-        this.setState({
-          courseData: response.data,
-          isEnrolled: response.data.users.some(
-            user => user.id === parseFloat(this.props.authInfo.userId)
-          )
-        });
-      })
-      .catch(error => {
-        console.log(error.response);
-      });
-  };
-
   render() {
-    if (this.state.redirect === true) {
-      return <Redirect to="/404" />;
-    }
+
     if (this.state.courseData === null) return null;
 
-    let enrollButton;
-
-    if (!this.state.isEnrolled && !this.state.isFinished) {
-      enrollButton = <MDBBtn onClick={this.enrollHandler}>Enroll</MDBBtn>;
-    }
-
     return (
-      <div className="CourseContainer">
+      <div className="CourseEditContainer">
         <MDBRow>
           <MDBCol md="8">
             <h1>{this.state.courseData.name}</h1>
@@ -129,30 +90,8 @@ class CourseContainer extends Component {
         <ReactMarkDown>{this.state.courseData.description}</ReactMarkDown>
 
         <hr />
-
-        <h1>Lectures</h1>
-        <br />
-        {this.state.courseData.lectures
-          .sort((a, b) => a.id - b.id)
-          .map(element => {
-            return (
-              <React.Fragment key={element.id}>
-                <LectureCardComponent
-                  authInfo={this.props.authInfo}
-                  lecture={element}
-                  key={element.id}
-                  courseId={this.state.courseData.id}
-                  isEnrolled={this.state.isEnrolled}
-                  isFinished={this.state.isFinished}
-                />
-                <hr width="70%" />
-                <br />
-              </React.Fragment>
-            );
-          })}
       </div>
     );
   }
 }
-
-export default CourseContainer;
+export default CourseEditContainer;
