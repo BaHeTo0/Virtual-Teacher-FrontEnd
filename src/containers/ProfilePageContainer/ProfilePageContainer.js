@@ -92,9 +92,10 @@ class ProfilePageContainer extends React.Component {
         break;
       case 2:
         rightSide = (
-          <CourseCardsComponent
+          <CourseListComponent
             courses={this.state.profile.createdCourses}
             authInfo={this.props.authInfo}
+            tableName="Courses you created"
           />
         );
         break;

@@ -263,6 +263,7 @@ class LectureCardComponent extends Component {
                   className="custom-file-input"
                   id="selectedFileText"
                   onChange={this.fileChangeHandler}
+                  accept=".txt,.pdf,.java,.doc,.docx"
                 />
                 <label className="custom-file-label" htmlFor="selectedFileText">
                   {this.state.selectedFileText}

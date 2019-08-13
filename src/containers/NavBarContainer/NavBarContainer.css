@@ -1,3 +1,7 @@
 .NavBarContainer {
   text-align: left;
 }
+
+.alert .alert-warning {
+  margin-bottom: 0px;
+}

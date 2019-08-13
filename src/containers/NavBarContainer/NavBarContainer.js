@@ -13,13 +13,17 @@ import {
   MDBDropdown,
   MDBDropdownToggle,
   MDBDropdownMenu,
-  MDBDropdownItem
+  MDBDropdownItem,
+  MDBAlert
 } from "mdbreact";
 
-import "./NavBarContainer.css";
+import axios from "axios";
+
 import LoginModalComponent from "../../components/LoginModalComponent/LoginModalComponent";
 import NotificationComponent from "../../components/NotificationComponent/NotificationComponent";
 import RegisterModalComponent from "../../components/RegisterModalComponent/RegisterModalComponent";
+import "./NavBarContainer.css";
+import CourseModalComponent from "../../components/CourseModalComponent/CourseModalComponent";
 
 class NavBarContainer extends Component {
   constructor(props) {
@@ -28,12 +32,41 @@ class NavBarContainer extends Component {
     this.state = {
       isOpen: false,
       loginModal: false,
-      registerModal: false
+      registerModal: false,
+      courseModal: false,
+      teacherAlert: false,
+      alertMessage: ""
     };
 
     this.toggleLoginModal = this.toggleLoginModal.bind(this);
     this.toggleRegisterModal = this.toggleRegisterModal.bind(this);
+    this.toggleCourseModal = this.toggleCourseModal.bind(this);
   }
+
+  requestTeacher = () => {
+    const config = {
+      headers: {
+        Authorization: "Bearer " + this.props.authInfo.authToken
+      }
+    };
+
+    axios
+      .post("http://localhost:8080/api/teachers/", null, config)
+      .then(response => {
+        console.log(response);
+        this.setState({
+          teacherAlert: true,
+          alertMessage:
+            "You have requested to become a teacher, wait for approval from an admin"
+        });
+      })
+      .catch(error => {
+        this.setState({
+          teacherAlert: true,
+          alertMessage: "You have already requested to become a teacher"
+        });
+      });
+  };
 
   toggleCollapse = () => {
     this.setState({ isOpen: !this.state.isOpen });
@@ -49,10 +82,17 @@ class NavBarContainer extends Component {
     });
   };
 
+  toggleCourseModal = () => {
+    this.setState({ courseModal: !this.state.courseModal });
+  };
+
   render() {
     let authButtons = null;
     let profileButton = null;
     let notificationButton = null;
+    let teacherButton = null;
+    let teacherAlert = null;
+    let newCourseButton = null;
 
     if (this.props.authInfo.authToken === "") {
       authButtons = (
@@ -75,7 +115,9 @@ class NavBarContainer extends Component {
         </React.Fragment>
       );
     } else {
-      notificationButton = <NotificationComponent authInfo={this.props.authInfo}/>
+      notificationButton = (
+        <NotificationComponent authInfo={this.props.authInfo} />
+      );
 
       profileButton = (
         <React.Fragment>
@@ -99,8 +141,54 @@ class NavBarContainer extends Component {
       );
     }
 
+    if (
+      this.props.authInfo.Student === true &&
+      this.props.authInfo.Teacher === "false" &&
+      this.props.authInfo.Admin === "false"
+    ) {
+      teacherButton = (
+        <React.Fragment>
+          <MDBNavItem>
+            <MDBBtn
+              outline
+              onClick={this.requestTeacher}
+              size="sm"
+              color="white"
+            >
+              Request Teacher Position
+            </MDBBtn>
+          </MDBNavItem>
+        </React.Fragment>
+      );
+    }
+
+    if (this.state.teacherAlert) {
+      teacherAlert = (
+        <MDBAlert color="warning" dismiss>
+          {this.state.alertMessage}
+        </MDBAlert>
+      );
+    }
+
+    if (this.props.authInfo.Teacher === true) {
+      newCourseButton = (
+        <React.Fragment>
+          <MDBNavItem>
+            <MDBBtn
+              outline
+              onClick={this.toggleCourseModal}
+              size="sm"
+              color="white"
+            >
+              Add course
+            </MDBBtn>
+          </MDBNavItem>
+        </React.Fragment>
+      );
+    }
     return (
       <div className="NavBarContainer">
+        {teacherAlert}
         <MDBNavbar
           color="blue-gradient"
           dark
@@ -152,6 +240,8 @@ class NavBarContainer extends Component {
               </MDBNavItem>
             </MDBNavbarNav>
             <MDBNavbarNav right>
+              {newCourseButton}
+              {teacherButton}
               {notificationButton}
               {authButtons}
               {profileButton}
@@ -169,6 +259,13 @@ class NavBarContainer extends Component {
           isOpen={this.state.registerModal}
           toggleModal={this.toggleRegisterModal}
           authHandler={this.props.authHandler}
+        />
+
+        <CourseModalComponent
+          isOpen={this.state.courseModal}
+          toggleModal={this.toggleCourseModal}
+          authHandler={this.props.authHandler}
+          authInfo={this.props.authInfo}
         />
       </div>
     );
