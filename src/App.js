@@ -12,6 +12,7 @@ import axios from "axios";
 import CourseContainer from "./containers/CourseContainer/CourseContainer";
 import ProfilePageContainer from "./containers/ProfilePageContainer/ProfilePageContainer";
 import NotFoundContainer from "./containers/NotFoundContainer/NotFoundContainer";
+import CourseEditContainer from "./containers/CourseEditContainer/CourseEditContainer";
 
 class App extends Component {
   constructor(props) {
@@ -94,6 +95,16 @@ class App extends Component {
               path="/course/:id"
               render={routeProps => (
                 <CourseContainer
+                  {...routeProps}
+                  authInfo={this.state}
+                  authHandler={this.authHandler}
+                />
+              )}
+            />
+            <Route
+              path="/edit/:id"
+              render={routeProps => (
+                <CourseEditContainer
                   {...routeProps}
                   authInfo={this.state}
                   authHandler={this.authHandler}

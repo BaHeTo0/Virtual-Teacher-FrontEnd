@@ -5,16 +5,16 @@ import StarRatings from "react-star-ratings";
 import ReactMarkDown from "react-markdown";
 import { Redirect } from "react-router";
 import LectureCardComponent from "../../components/LectureCardComponent/LectureCardComponent";
-const removeMd = require("remove-markdown");
 import "./CourseEditContainer.css";
+const removeMd = require("remove-markdown");
 
 class CourseEditContainer extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-        courseData: null
-      };
+      courseData: null
+    };
   }
 
   componentDidMount() {
@@ -47,8 +47,9 @@ class CourseEditContainer extends Component {
   }
 
   render() {
-
     if (this.state.courseData === null) return null;
+
+    if (this.state.courseData.submitted) return <Redirect to="/" />;
 
     return (
       <div className="CourseEditContainer">
@@ -66,7 +67,6 @@ class CourseEditContainer extends Component {
               {removeMd(this.state.courseData.description)}
             </div>
             <br />
-            {enrollButton}
             <br />
 
             <h5>
@@ -84,12 +84,31 @@ class CourseEditContainer extends Component {
             />
           </MDBCol>
         </MDBRow>
-
         <hr />
         <h1>Description of the course</h1>
         <ReactMarkDown>{this.state.courseData.description}</ReactMarkDown>
-
         <hr />
+        <h1>Lectures</h1>
+        <br />
+        <MDBBtn >Add a lecture</MDBBtn>
+        {this.state.courseData.lectures
+          .sort((a, b) => a.id - b.id)
+          .map(element => {
+            return (
+              <React.Fragment key={element.id}>
+                <LectureCardComponent
+                  authInfo={this.props.authInfo}
+                  lecture={element}
+                  key={element.id}
+                  courseId={this.state.courseData.id}
+                  isEnrolled={this.state.false}
+                  isFinished={this.state.false}
+                />
+                <hr width="70%" />
+                <br />
+              </React.Fragment>
+            );
+          })}
       </div>
     );
   }
