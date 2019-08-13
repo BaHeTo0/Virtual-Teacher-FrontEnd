@@ -2,7 +2,6 @@ import React from "react";
 import ProfileCardComponent from "../../components/Profile/ProfileCard/ProfileCardComponent";
 import { MDBContainer, MDBCol, MDBRow, MDBBtn, MDBBtnGroup } from "mdbreact";
 import ProfileDetailsComponent from "../../components/Profile/ProfileDetails/ProfileDetailsComponent";
-import CourseCardsComponent from "../../components/CourseCardsComponent/CourseCardsComponent";
 import axios from "axios";
 import "./ProfilePageContainer.css";
 import CourseListComponent from "../../components/CourseListComponent/CourseListComponent";

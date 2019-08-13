@@ -2,3 +2,11 @@
   margin: 3% 20% 2% 20%;
   text-align: left;
 }
+
+.CourseEditContainer .short-desc-container {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  width: 75%;
+}

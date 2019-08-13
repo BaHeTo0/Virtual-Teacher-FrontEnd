@@ -6,6 +6,7 @@ import ReactMarkDown from "react-markdown";
 import { Redirect } from "react-router";
 import LectureCardComponent from "../../components/LectureCardComponent/LectureCardComponent";
 import "./CourseEditContainer.css";
+import LectureModalComponent from "../../components/LectureModalComponent/LectureModalComponent";
 const removeMd = require("remove-markdown");
 
 class CourseEditContainer extends Component {
@@ -13,9 +14,14 @@ class CourseEditContainer extends Component {
     super(props);
 
     this.state = {
-      courseData: null
+      courseData: null,
+      lectureModal: false
     };
   }
+
+  toggleLectureModal = () => {
+    this.setState({ lectureModal: !this.state.lectureModal });
+  };
 
   componentDidMount() {
     let config = {
@@ -46,10 +52,13 @@ class CourseEditContainer extends Component {
       });
   }
 
+
+  
   render() {
     if (this.state.courseData === null) return null;
 
-    if (this.state.courseData.submitted) return <Redirect to="/" />;
+    if (this.state.courseData.submitted)
+      return <Redirect to={"/course/" + this.state.courseData.id} />;
 
     return (
       <div className="CourseEditContainer">
@@ -90,7 +99,7 @@ class CourseEditContainer extends Component {
         <hr />
         <h1>Lectures</h1>
         <br />
-        <MDBBtn >Add a lecture</MDBBtn>
+        <MDBBtn onClick={this.toggleLectureModal}>Add a lecture</MDBBtn>
         {this.state.courseData.lectures
           .sort((a, b) => a.id - b.id)
           .map(element => {
@@ -109,6 +118,14 @@ class CourseEditContainer extends Component {
               </React.Fragment>
             );
           })}
+
+        <LectureModalComponent
+          isOpen={this.state.lectureModal}
+          toggleModal={this.toggleLectureModal}
+          authHandler={this.props.authHandler}
+          authInfo={this.props.authInfo}
+          courseId={this.state.courseData.id}
+        />
       </div>
     );
   }

@@ -13,6 +13,9 @@ class CourseListComponent extends Component {
     let courses = null;
     if (this.props.courses !== null && this.props.courses !== []) {
       courses = this.props.courses.map(element => {
+        let url = element.submitted
+          ? "/course/" + element.id
+          : "/edit/" + element.id;
         return (
           <tr key={element.id}>
             <td>{element.name}</td>
@@ -20,8 +23,11 @@ class CourseListComponent extends Component {
             <td>{element.averageRating}</td>
             <td>{element.author.firstName}</td>
             <td>
-              <MDBBtn  size="sm" href={"/courses/" + element.id}>Go to course</MDBBtn>
+              <MDBBtn size="sm" href={url}>
+                Go to course
+              </MDBBtn>
             </td>
+            <td>{element.submitted?"Yes":"No"}</td>
           </tr>
         );
       });
@@ -46,6 +52,7 @@ class CourseListComponent extends Component {
               <th>Rating</th>
               <th>Author</th>
               <th>Link</th>
+              <th>Submitted</th>
             </tr>
           </MDBTableHead>
           <MDBTableBody>{courses}</MDBTableBody>

@@ -7,6 +7,7 @@ import {
   MDBRow,
   MDBCol
 } from "mdbreact";
+import { Redirect } from "react-router-dom";
 import "./CourseModalComponent.css";
 import axios from "axios";
 
@@ -21,13 +22,15 @@ class CourseModalComponent extends Component {
       fileName: "",
       file: null,
 
+      redirect: false,
+      courseId: null,
+
       error: "",
 
       formErrors: {
-        courseName: "",
-        courseDescription: "",
-        courseTopic: "",
-        fileName: ""
+        courseName: " ",
+        courseDescription: " ",
+        fileName: " "
       }
     };
   }
@@ -56,12 +59,12 @@ class CourseModalComponent extends Component {
         break;
       case "courseDescription":
         formErrors.courseDescription =
-          value.length >= 3 && value.length <= 3000
+          value.length >= 10 && value.length <= 3000
             ? ""
             : "Description should be 3-3000 symbols long";
         break;
       case "fileName":
-        formErrors.fileName = value.length > 1 ? "" : "Add a thumbnail file";
+        formErrors.fileName = event.target.files[0] !==null ? "" : "Add a thumbnail file";
         this.setState({ file: event.target.files[0] });
         break;
       default:
@@ -72,6 +75,9 @@ class CourseModalComponent extends Component {
 
   addCourseHandler = event => {
     event.preventDefault();
+
+    console.log(this.state);
+
     if (!this.formValid(this.state.formErrors)) {
       this.setState({ error: "Some fields contain errors!" });
       return;
@@ -93,13 +99,20 @@ class CourseModalComponent extends Component {
       .post("http://localhost:8080/api/courses", formData, config)
       .then(response => {
         console.log(response);
+        this.setState({ redirect: true, courseId: response.data.id });
       })
       .catch(error => {
-        this.setState({ error: error.data.message });
+        console.log(error);
+        if (error.response.data !== undefined) {
+          this.setState({ error: error });
+        }
       });
   };
 
   render() {
+    if (this.state.redirect)
+      return <Redirect to={"/edit/" + this.state.courseId} />;
+
     return (
       <MDBModal isOpen={this.props.isOpen} toggle={this.props.toggleModal}>
         <MDBModalHeader>New Course</MDBModalHeader>
