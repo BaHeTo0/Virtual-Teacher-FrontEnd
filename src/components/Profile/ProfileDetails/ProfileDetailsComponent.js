@@ -18,6 +18,12 @@ class ProfileDetailsComponent extends React.Component {
       email: props.profile.email,
       password: "",
       confirmPassword: "",
+      passwordError:
+        "Minimum eight characters, at least one letter and one number",
+      confirmPasswordError: "Passwords must match",
+
+      passwordMessage: "",
+      passwordMessageType: "",
 
       statusMessage: "",
       statusType: "",
@@ -33,7 +39,9 @@ class ProfileDetailsComponent extends React.Component {
       changes: {
         firstName: false,
         lastName: false,
-        email: false
+        email: false,
+        password: false,
+        confirmPassword: false
       }
     };
   }
@@ -45,6 +53,30 @@ class ProfileDetailsComponent extends React.Component {
       if (error.length > 0) valid = false;
     });
     return valid;
+  };
+
+  onPasswordChange = event => {
+    const { name, value } = event.target;
+    switch (name) {
+      case "password":
+        let pError =
+          passwordRegex.test(value) && value.length > 0
+            ? ""
+            : "Minimum eight characters, at least one letter and one number";
+        this.setState({ passwordError: pError });
+        break;
+      case "confirmPassword":
+        let cpError =
+          value === this.state.password && value.length > 0
+            ? ""
+            : "Passwords must match";
+        this.setState({ confirmPasswordError: cpError });
+        break;
+      default:
+        break;
+    }
+
+    this.setState({ [name]: value });
   };
 
   onChange = event => {
@@ -70,18 +102,6 @@ class ProfileDetailsComponent extends React.Component {
             ? ""
             : "Enter a valid email";
         break;
-      case "password":
-        formErrors.password =
-          passwordRegex.test(value) && value.length > 0
-            ? ""
-            : "Minimum eight characters, at least one letter and one number";
-        break;
-      case "confirmPassword":
-        formErrors.confirmPassword =
-          value === this.state.password && value.length > 0
-            ? ""
-            : "Passwords must match";
-        break;
       default:
         break;
     }
@@ -105,7 +125,43 @@ class ProfileDetailsComponent extends React.Component {
     }
   };
 
-  onClick = () => {
+  passwordUpdate = () => {
+    const config = {
+      headers: {
+        Authorization: "Bearer " + this.props.authInfo.authToken
+      },
+      params: {
+        newPassword: this.state.password
+      }
+    };
+
+    axios
+      .put(
+        `http://localhost:8080/api/users/${
+          this.props.authInfo.userId
+        }/updatePassword`,
+        null,
+        config
+      )
+      .then(response => {
+        console.log(response.data);
+        this.setState({
+          passwordMessage: "Password changed",
+          passwordMessageType: "good"
+        });
+      })
+      .catch(error => {
+        console.log(error);
+        this.setState({
+          passwordMessage: `Couldn't save changes: ${
+            error.response.data.message
+          }`,
+          passwordMessageType: "bad"
+        });
+      });
+  };
+
+  infoUpdate = () => {
     if (!this.formValid(this.state.formErrors)) {
       this.setState({
         statusMessage: "Some fields contain errors!",
@@ -177,7 +233,7 @@ class ProfileDetailsComponent extends React.Component {
       this.formValid(this.state.formErrors)
     ) {
       saveBtn = (
-        <MDBBtn disabled={false} onClick={this.onClick}>
+        <MDBBtn disabled={false} onClick={this.infoUpdate}>
           Save Changes
         </MDBBtn>
       );
@@ -203,11 +259,29 @@ class ProfileDetailsComponent extends React.Component {
 
     let passwordButton = <MDBBtn disabled={false}>Change password</MDBBtn>;
 
-    if (this.formValid(this.state.formErrors)) {
-      passwordButton = (
-        <MDBBtn disabled={!this.formValid(this.state.formErrors)}>
-          Change password
-        </MDBBtn>
+    if (
+      this.state.password.length > 0 &&
+      this.state.passwordError.length < 1 &&
+      this.state.confirmPasswordError.length < 1
+    ) {
+      passwordButton = <MDBBtn onClick={this.passwordUpdate}>Change password</MDBBtn>;
+    } else {
+      passwordButton = <MDBBtn disabled>Change password</MDBBtn>;
+    }
+
+    let passwordStatusMessage;
+
+    if (this.state.passwordMessage.length > 0) {
+      passwordStatusMessage = (
+        <div
+          className={
+            this.state.passwordMessageType === "bad"
+              ? "text-center red-text"
+              : "text-center green-text"
+          }
+        >
+          {this.state.passwordMessage}
+        </div>
       );
     }
 
@@ -273,34 +347,33 @@ class ProfileDetailsComponent extends React.Component {
             type="password"
             name="password"
             value={this.state.password}
-            onChange={this.onChange}
+            onChange={this.onPasswordChange}
             className={
-              this.state.formErrors.password.length > 1
+              this.state.passwordError.length > 1
                 ? "form-control is-invalid"
                 : "form-control"
             }
           />
-          <div className="invalid-feedback">
-            {this.state.formErrors.password}
-          </div>
+          <div className="invalid-feedback">{this.state.passwordError}</div>
           <br />
           <label>Confirm password</label>
           <input
             type="password"
             name="confirmPassword"
             value={this.state.confirmPassword}
-            onChange={this.onChange}
+            onChange={this.onPasswordChange}
             className={
-              this.state.formErrors.confirmPassword.length > 1
+              this.state.confirmPasswordError.length > 1
                 ? "form-control is-invalid"
                 : "form-control"
             }
           />
           <div className="invalid-feedback">
-            {this.state.formErrors.confirmPassword}
+            {this.state.confirmPasswordError}
           </div>
 
           <div className="text-center mt-4">{passwordButton}</div>
+          {passwordStatusMessage}
         </form>
       </div>
     );
