@@ -93,6 +93,7 @@ class NavBarContainer extends Component {
     let teacherButton = null;
     let teacherAlert = null;
     let newCourseButton = null;
+    let adminPanel = null;
 
     if (this.props.authInfo.authToken === "") {
       authButtons = (
@@ -186,6 +187,24 @@ class NavBarContainer extends Component {
         </React.Fragment>
       );
     }
+
+    if (this.props.authInfo.Admin === true) {
+      adminPanel = (
+        <React.Fragment>
+          <MDBNavItem>
+            <MDBBtn
+              outline
+              href={"/admin"}
+              size="sm"
+              color="white"
+            >
+              Admin Panel
+            </MDBBtn>
+          </MDBNavItem>
+        </React.Fragment>
+      );
+    }
+
     return (
       <div className="NavBarContainer">
         {teacherAlert}
@@ -240,6 +259,7 @@ class NavBarContainer extends Component {
               </MDBNavItem>
             </MDBNavbarNav>
             <MDBNavbarNav right>
+              {adminPanel}
               {newCourseButton}
               {teacherButton}
               {notificationButton}
