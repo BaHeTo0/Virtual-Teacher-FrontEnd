@@ -147,8 +147,8 @@ class NavBarContainer extends Component {
                 <MDBIcon icon="user" />
               </MDBDropdownToggle>
               <MDBDropdownMenu className="dropdown-default">
-                <MDBDropdownItem onClick={()=>this.goToPage("/profile")}>
-                  <strong>My profile</strong>
+                <MDBDropdownItem onClick={() => this.goToPage("/profile")}>
+                  My profile
                 </MDBDropdownItem>
                 <MDBDropdownItem onClick={this.props.logoutHandler}>
                   Log out
@@ -210,7 +210,12 @@ class NavBarContainer extends Component {
       adminPanel = (
         <React.Fragment>
           <MDBNavItem>
-            <MDBBtn outline onClick={()=>this.goToPage("/admin")} size="sm" color="white">
+            <MDBBtn
+              outline
+              onClick={() => this.goToPage("/admin")}
+              size="sm"
+              color="white"
+            >
               Admin Panel
             </MDBBtn>
           </MDBNavItem>
@@ -245,18 +250,22 @@ class NavBarContainer extends Component {
                     <span className="mr-2">Topics</span>
                   </MDBDropdownToggle>
                   <MDBDropdownMenu>
-                    <MDBDropdownItem onClick={()=>this.goToPage("/topic/1")}>Business</MDBDropdownItem>
-                    <MDBDropdownItem onClick={()=>this.goToPage("/topic/2")}>Design</MDBDropdownItem>
-                    <MDBDropdownItem onClick={()=>this.goToPage("/topic/3")}>
+                    <MDBDropdownItem onClick={() => this.goToPage("/topic/1")}>
+                      Business
+                    </MDBDropdownItem>
+                    <MDBDropdownItem onClick={() => this.goToPage("/topic/2")}>
+                      Design
+                    </MDBDropdownItem>
+                    <MDBDropdownItem onClick={() => this.goToPage("/topic/3")}>
                       Development
                     </MDBDropdownItem>
-                    <MDBDropdownItem onClick={()=>this.goToPage("/topic/4")}>
+                    <MDBDropdownItem onClick={() => this.goToPage("/topic/4")}>
                       Finance&amp;Accounting
                     </MDBDropdownItem>
-                    <MDBDropdownItem onClick={()=>this.goToPage("/topic/5")}>
+                    <MDBDropdownItem onClick={() => this.goToPage("/topic/5")}>
                       Health&amp;Fitness
                     </MDBDropdownItem>
-                    <MDBDropdownItem onClick={()=>this.goToPage("/topic/6")}>
+                    <MDBDropdownItem onClick={() => this.goToPage("/topic/6")}>
                       IT&amp;Software
                     </MDBDropdownItem>
                   </MDBDropdownMenu>

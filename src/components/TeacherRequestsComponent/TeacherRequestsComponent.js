@@ -81,6 +81,7 @@ class TeacherRequestsComponent extends React.Component {
                         <td>
                             Already accepted!
                         </td>
+                        <td></td>
                     </tr>
                 );                    
             } else {
