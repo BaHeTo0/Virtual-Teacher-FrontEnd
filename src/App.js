@@ -15,6 +15,7 @@ import NotFoundContainer from "./containers/NotFoundContainer/NotFoundContainer"
 import CourseEditContainer from "./containers/CourseEditContainer/CourseEditContainer";
 import AdminPanelContainer from "./containers/AdminPanelContainer/AdminPanelContainer";
 import SearchResultsContainer from "./containers/SearchResultsCountainer/SearchResultsContainer";
+import CourseTopicContainer from "./containers/CourseTopicContainer/CourseTopicContainer";
 
 class App extends Component {
   constructor(props) {
@@ -103,6 +104,17 @@ class App extends Component {
                 />
               )}
             />
+
+            <Route
+              path="/topic/:id"
+              render={routeProps => (
+                <CourseTopicContainer
+                  {...routeProps}
+                  authInfo={this.state}
+                  authHandler={this.authHandler}
+                />
+              )}
+            />
             <Route
               path="/edit/:id"
               render={routeProps => (
@@ -133,6 +145,7 @@ class App extends Component {
                   authInfo={this.state}
                   authHandler={this.authHandler}
                   logoutHandler={this.logoutHandler}
+                  history={this.props.history}
                 />
               )}
             />

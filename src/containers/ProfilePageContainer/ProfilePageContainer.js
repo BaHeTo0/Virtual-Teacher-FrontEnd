@@ -9,7 +9,7 @@ import CourseListComponent from "../../components/CourseListComponent/CourseList
 class ProfilePageContainer extends React.Component {
   constructor(props) {
     super(props);
-
+    console.log(props);
     this.state = {
       profile: null,
       rightSideOption: 0
@@ -78,6 +78,7 @@ class ProfilePageContainer extends React.Component {
               courses={this.state.profile.enrolledCourses}
               authInfo={this.props.authInfo}
               tableName="Ongoing Courses"
+              history={this.props.history}
             />
             <br />
             <CourseListComponent

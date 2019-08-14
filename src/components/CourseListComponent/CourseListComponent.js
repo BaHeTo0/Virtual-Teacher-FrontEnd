@@ -5,9 +5,13 @@ import "./CourseListComponent.css";
 class CourseListComponent extends Component {
   constructor(props) {
     super(props);
-
+    console.log(props);
     this.state = {};
   }
+
+  goToPage = page => {
+    this.props.history.push(page);
+  };
 
   render() {
     let courses = null;
@@ -31,7 +35,7 @@ class CourseListComponent extends Component {
             <td>{element.averageRating}</td>
             <td>{element.author.firstName}</td>
             <td>
-              <MDBBtn size="sm" href={url}>
+              <MDBBtn size="sm" onClick={() => this.goToPage(url)}>
                 Go to course
               </MDBBtn>
             </td>
