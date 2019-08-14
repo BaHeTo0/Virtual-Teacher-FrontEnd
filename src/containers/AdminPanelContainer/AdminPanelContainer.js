@@ -1,7 +1,9 @@
 import React from "react"
+import { Redirect } from "react-router-dom"
 import { MDBContainer, MDBCol, MDBRow, MDBBtn, MDBBtnGroup } from "mdbreact";
 import TeacherRequestsComponent from "../../components/TeacherRequestsComponent/TeacherRequestsComponent";
 import UserManagerComponent from "../../components/UserManagerComponent/UserManagerComponent";
+import axios from "axios"
 
 class AdminPanelContainer extends React.Component {
     constructor(props) {
@@ -10,8 +12,28 @@ class AdminPanelContainer extends React.Component {
         this.state = {
           teacherRequests: [],
           users:[],
-          rightSideOption: 0
+          rightSideOption: 0,
+          profile: null
         };
+      }
+
+      componentWillMount() {
+        let config = {
+          headers: {
+            Authorization: "Bearer " + this.props.authInfo.authToken
+          }
+        };
+    
+        axios
+          .get(`http://localhost:8080/api/users/me`, config)
+          .then(response => {
+            this.setState({
+              profile: response.data
+            });
+          })
+          .catch(error => {
+            console.log(error.response);
+          });
       }
 
       onClick = num => () => {
@@ -21,6 +43,10 @@ class AdminPanelContainer extends React.Component {
       };
 
       render() {
+        
+        if (this.state.profile !== null && this.state.profile.roles.length < 3) {
+          return (<Redirect to="/404" />)
+        }
 
         let rightSide = null;
 

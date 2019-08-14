@@ -26,7 +26,6 @@ class ProfilePageContainer extends React.Component {
     axios
       .get(`http://localhost:8080/api/users/me`, config)
       .then(response => {
-        console.log(response.data);
         this.setState({
           profile: response.data
         });
