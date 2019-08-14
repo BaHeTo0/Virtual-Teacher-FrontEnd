@@ -1,5 +1,4 @@
 import React from "react"
-import axios from "axios"
 import { MDBContainer, MDBCol, MDBRow, MDBBtn, MDBBtnGroup } from "mdbreact";
 import TeacherRequestsComponent from "../../components/TeacherRequestsComponent/TeacherRequestsComponent";
 import UserManagerComponent from "../../components/UserManagerComponent/UserManagerComponent";

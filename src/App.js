@@ -14,6 +14,7 @@ import ProfilePageContainer from "./containers/ProfilePageContainer/ProfilePageC
 import NotFoundContainer from "./containers/NotFoundContainer/NotFoundContainer";
 import CourseEditContainer from "./containers/CourseEditContainer/CourseEditContainer";
 import AdminPanelContainer from "./containers/AdminPanelContainer/AdminPanelContainer";
+import SearchResultsContainer from "./containers/SearchResultsCountainer/SearchResultsContainer";
 
 class App extends Component {
   constructor(props) {
@@ -112,6 +113,10 @@ class App extends Component {
                 />
               )}
             />
+            <Route path="/search"
+              render={routeProps => (
+              <SearchResultsContainer {...routeProps} authInfo={this.state} />
+            )} />
             <Route
               path="/courses"
               render={routeProps => (
@@ -132,6 +137,7 @@ class App extends Component {
             <Route path="/admin" render={routeProps => (
               <AdminPanelContainer {...routeProps} authInfo={this.state} />
             )} />
+
 
             <Route path="/404" component={NotFoundContainer} />
 

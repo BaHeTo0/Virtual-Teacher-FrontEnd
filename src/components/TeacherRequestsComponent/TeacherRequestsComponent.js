@@ -25,7 +25,6 @@ class TeacherRequestsComponent extends React.Component {
           axios
             .get(`http://localhost:8080/api/teachers`, config)
             .then(response => {
-              console.log(response.data);
               this.setState({
                 users: response.data
               });
@@ -45,7 +44,6 @@ class TeacherRequestsComponent extends React.Component {
           axios
             .put(`http://localhost:8080/api/teachers/${id}`,null, config)
             .then(response => {
-              console.log(response.data);
               this.update()
             })
             .catch(error => {
@@ -63,7 +61,6 @@ class TeacherRequestsComponent extends React.Component {
           axios
             .delete(`http://localhost:8080/api/teachers/${id}`, config)
             .then(response => {
-              console.log(response.data);
               this.update()
             })
             .catch(error => {

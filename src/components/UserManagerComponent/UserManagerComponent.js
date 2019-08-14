@@ -25,7 +25,6 @@ class UserManagerComponent extends React.Component {
           axios
             .get(`http://localhost:8080/api/users`, config)
             .then(response => {
-              console.log(response.data);
               this.setState({
                 users: response.data
               });
@@ -50,7 +49,6 @@ class UserManagerComponent extends React.Component {
           axios
             .put(`http://localhost:8080/api/admin/role?userId=${id}&roleName=${role}`,payload, config)
             .then(response => {
-              console.log(response.data);
               this.update()
             })
             .catch(error => {
@@ -73,16 +71,6 @@ class UserManagerComponent extends React.Component {
                 Set Teacher
                 </MDBBtn>)
 
-            let setStudent = (
-                <MDBBtn size="sm" onClick={this.changeRole(element.id, "Student")}>
-                Set Student
-                </MDBBtn>)
-
-            if (element.roles.length >= 1) {
-                setStudent = (<MDBBtn size="sm" disabled={true} color="red">
-                                Student
-                              </MDBBtn>)
-            }
             if (element.roles.length >= 2) {
                 setTeacher = (<MDBBtn size="sm" color="red" onClick={this.changeRole(element.id, "Student")}>
                                 Remove Teacher
@@ -106,9 +94,6 @@ class UserManagerComponent extends React.Component {
                 </td>
                 <td>
                   {setTeacher}
-                </td>
-                <td>
-                  {setStudent}
                 </td>
               </tr>
             );

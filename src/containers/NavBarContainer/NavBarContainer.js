@@ -18,7 +18,6 @@ import {
 } from "mdbreact";
 
 import axios from "axios";
-
 import LoginModalComponent from "../../components/LoginModalComponent/LoginModalComponent";
 import NotificationComponent from "../../components/NotificationComponent/NotificationComponent";
 import RegisterModalComponent from "../../components/RegisterModalComponent/RegisterModalComponent";
@@ -35,7 +34,8 @@ class NavBarContainer extends Component {
       registerModal: false,
       courseModal: false,
       teacherAlert: false,
-      alertMessage: ""
+      alertMessage: "",
+      searchField: ""
     };
 
     this.toggleLoginModal = this.toggleLoginModal.bind(this);
@@ -85,6 +85,18 @@ class NavBarContainer extends Component {
   toggleCourseModal = () => {
     this.setState({ courseModal: !this.state.courseModal });
   };
+
+  searchHandler = (event) => {
+    event.preventDefault();
+    let redirectUrl = "/search/?searchField="+this.state.searchField;
+    this.props.history.push(redirectUrl);
+  }
+
+  onChange = (event) => {
+    this.setState({
+      searchField: event.target.value
+    })
+  }
 
   render() {
     let authButtons = null;
@@ -246,14 +258,15 @@ class NavBarContainer extends Component {
                 </MDBDropdown>
               </MDBNavItem>
               <MDBNavItem>
-                <MDBFormInline waves>
+                <MDBFormInline waves onSubmit={this.searchHandler}>
                   <div className="md-form my-0">
-                    <input
-                      className="form-control mr-sm-2"
-                      type="text"
-                      placeholder="Search"
-                      aria-label="Search"
-                    />
+                      <input
+                        className="form-control mr-sm-2"
+                        type="text"
+                        placeholder="Search"
+                        aria-label="Search"
+                        onChange={this.onChange}
+                      />
                   </div>
                 </MDBFormInline>
               </MDBNavItem>
