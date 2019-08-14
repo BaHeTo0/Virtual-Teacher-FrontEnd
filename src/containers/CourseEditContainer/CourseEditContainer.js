@@ -52,8 +52,28 @@ class CourseEditContainer extends Component {
       });
   }
 
+  saveCourse = () => {
+    let config = {
+      headers: {
+        Authorization: "Bearer " + this.props.authInfo.authToken
+      }
+    };
 
-  
+    axios
+      .put(
+        `http://localhost:8080/api/courses/${this.state.courseData.id}/submit`,
+        null,
+        config
+      )
+      .then(response => {
+        console.log(response);
+        this.componentDidMount();
+      })
+      .catch(error => {
+        console.log(error.response);
+      });
+  };
+
   render() {
     if (this.state.courseData === null) return null;
 
@@ -76,6 +96,10 @@ class CourseEditContainer extends Component {
               {removeMd(this.state.courseData.description)}
             </div>
             <br />
+
+            <MDBBtn onClick={this.saveCourse} color="primary">
+              Save course
+            </MDBBtn>
             <br />
 
             <h5>
