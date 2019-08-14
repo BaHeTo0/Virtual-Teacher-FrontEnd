@@ -113,10 +113,12 @@ class App extends Component {
                 />
               )}
             />
-            <Route path="/search"
+            <Route
+              path="/search"
               render={routeProps => (
-              <SearchResultsContainer {...routeProps} authInfo={this.state} />
-            )} />
+                <SearchResultsContainer {...routeProps} authInfo={this.state} />
+              )}
+            />
             <Route
               path="/courses"
               render={routeProps => (
@@ -134,13 +136,14 @@ class App extends Component {
                 />
               )}
             />
-            <Route path="/admin" render={routeProps => (
-              <AdminPanelContainer {...routeProps} authInfo={this.state} />
-            )} />
-
+            <Route
+              path="/admin"
+              render={routeProps => (
+                <AdminPanelContainer {...routeProps} authInfo={this.state} />
+              )}
+            />
 
             <Route path="/404" component={NotFoundContainer} />
-
 
             <Route
               path="/"

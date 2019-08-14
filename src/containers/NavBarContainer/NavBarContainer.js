@@ -21,8 +21,8 @@ import axios from "axios";
 import LoginModalComponent from "../../components/LoginModalComponent/LoginModalComponent";
 import NotificationComponent from "../../components/NotificationComponent/NotificationComponent";
 import RegisterModalComponent from "../../components/RegisterModalComponent/RegisterModalComponent";
-import "./NavBarContainer.css";
 import CourseModalComponent from "../../components/CourseModalComponent/CourseModalComponent";
+import "./NavBarContainer.css";
 
 class NavBarContainer extends Component {
   constructor(props) {
@@ -68,6 +68,7 @@ class NavBarContainer extends Component {
       });
   };
 
+
   toggleCollapse = () => {
     this.setState({ isOpen: !this.state.isOpen });
   };
@@ -86,17 +87,18 @@ class NavBarContainer extends Component {
     this.setState({ courseModal: !this.state.courseModal });
   };
 
-  searchHandler = (event) => {
+  searchHandler = event => {
     event.preventDefault();
-    let redirectUrl = "/search/?searchField="+this.state.searchField;
+    if (this.state.searchField === "") return;
+    let redirectUrl = "/search/?searchField=" + this.state.searchField;
     this.props.history.push(redirectUrl);
-  }
+  };
 
-  onChange = (event) => {
+  onChange = event => {
     this.setState({
       searchField: event.target.value
-    })
-  }
+    });
+  };
 
   render() {
     let authButtons = null;
@@ -204,12 +206,7 @@ class NavBarContainer extends Component {
       adminPanel = (
         <React.Fragment>
           <MDBNavItem>
-            <MDBBtn
-              outline
-              href={"/admin"}
-              size="sm"
-              color="white"
-            >
+            <MDBBtn outline href={"/admin"} size="sm" color="white">
               Admin Panel
             </MDBBtn>
           </MDBNavItem>
@@ -260,13 +257,13 @@ class NavBarContainer extends Component {
               <MDBNavItem>
                 <MDBFormInline waves onSubmit={this.searchHandler}>
                   <div className="md-form my-0">
-                      <input
-                        className="form-control mr-sm-2"
-                        type="text"
-                        placeholder="Search"
-                        aria-label="Search"
-                        onChange={this.onChange}
-                      />
+                    <input
+                      className="form-control mr-sm-2"
+                      type="text"
+                      placeholder="Search"
+                      aria-label="Search"
+                      onChange={this.onChange}
+                    />
                   </div>
                 </MDBFormInline>
               </MDBNavItem>

@@ -1,6 +1,14 @@
 import React, { Component } from "react";
 import "./CourseContainer.css";
-import { MDBBtn, MDBRow, MDBCol } from "mdbreact";
+import {
+  MDBBtn,
+  MDBRow,
+  MDBCol,
+  MDBModal,
+  MDBModalHeader,
+  MDBModalBody,
+  MDBModalFooter
+} from "mdbreact";
 import axios from "axios";
 import StarRatings from "react-star-ratings";
 import ReactMarkDown from "react-markdown";
@@ -14,9 +22,17 @@ class CourseContainer extends Component {
 
     this.state = {
       courseData: null,
+
+      currentUser: null,
+      starRating: 0,
+      userRating: null,
+      isModalOpen: true,
+
       isEnrolled: false,
       isFinished: false,
-      redirect: false
+
+      redirect: false,
+      openModalOnce: false
     };
   }
 
@@ -47,7 +63,41 @@ class CourseContainer extends Component {
         console.log(error.response);
         this.setState({ redirect: true });
       });
+
+    axios
+      .get("http://localhost:8080/api/users/me", config)
+      .then(response => {
+        this.setState({ currentUser: response.data });
+      })
+      .catch(error => {
+        console.log(error.response);
+      });
+
+    axios
+      .get(
+        `http://localhost:8080/api/courses/my-rating?course-id=${
+          this.props.match.params.id
+        }`,
+        config
+      )
+      .then(response => {
+        console.log(response);
+        this.setState({ userRating: response.data.rating });
+      })
+      .catch(error => {
+        console.log(error.response);
+      });
   }
+
+  toggleModal = () => {
+    this.setState({ isModalOpen: this.state.isModalOpen, openModalOnce: true });
+  };
+
+  changeRating = newRating => {
+    this.setState({
+      starRating: newRating
+    });
+  };
 
   enrollHandler = () => {
     let config = {
@@ -77,6 +127,30 @@ class CourseContainer extends Component {
       });
   };
 
+  rateHandler = () => {
+    let config = {
+      headers: {
+        Authorization: "Bearer " + this.props.authInfo.authToken
+      }
+    };
+
+    axios
+      .put(
+        `http://localhost:8080/api/courses/rate-course?course-id=${
+          this.props.match.params.id
+        }&rating=${this.state.starRating}`,
+        null,
+        config
+      )
+      .then(response => {
+        console.log(response.data);
+        this.setState({ courseData: response.data, isModalOpen: false });
+      })
+      .catch(error => {
+        console.log(error.response);
+      });
+  };
+
   render() {
     if (this.state.redirect === true) {
       return <Redirect to="/404" />;
@@ -89,31 +163,64 @@ class CourseContainer extends Component {
       enrollButton = <MDBBtn onClick={this.enrollHandler}>Enroll</MDBBtn>;
     }
 
+    let rateModal;
+
+    if (
+      !this.state.openModalOnce &&
+      this.state.userRating === null &&
+      this.state.isFinished
+    ) {
+      rateModal = (
+        <MDBModal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+          <MDBModalHeader>Rate course</MDBModalHeader>
+          <MDBModalBody>
+            <h3>Enjoyed this course? Rate it!</h3>
+            <StarRatings
+              rating={this.state.starRating}
+              starRatedColor="rgb(255,165,52)"
+              starHoverColor="rgb(255,69,69)"
+              changeRating={this.changeRating}
+              numberOfStars={5}
+              starDimension="30px"
+              starSpacing="0px"
+            />
+            <br />
+          </MDBModalBody>
+          <MDBModalFooter>
+            <MDBBtn
+              color="secondary"
+              onClick={this.rateHandler}
+              disabled={this.state.starRating === 0}
+            >
+              Rate
+            </MDBBtn>
+            <MDBBtn color="primary" onClick={this.toggleModal}>
+              Close
+            </MDBBtn>
+          </MDBModalFooter>
+        </MDBModal>
+      );
+    }
+
     return (
       <div className="CourseContainer">
         <MDBRow>
           <MDBCol md="8">
             <h1>{this.state.courseData.name}</h1>
+            <p>{this.state.courseData.topic.name}</p>
             <StarRatings
               starRatedColor="rgb(255,225,0)"
               rating={this.state.courseData.averageRating}
               starDimension="30px"
               starSpacing="0px"
             />
-            <p>{this.state.courseData.topic.name}</p>
+            <br />({this.state.courseData.totalVotes} votes)
+            <br />
+            <br />
             <div className="short-desc-container">
               {removeMd(this.state.courseData.description)}
             </div>
-            <br />
             {enrollButton}
-            <br />
-
-            <h5>
-              Created by{" "}
-              {this.state.courseData.author.firstName +
-                " " +
-                this.state.courseData.author.lastName}
-            </h5>
           </MDBCol>
           <MDBCol md="4">
             <img
@@ -121,13 +228,21 @@ class CourseContainer extends Component {
               className="rounded img-thumbnail"
               alt=""
             />
+            <h6>
+              Created by{" "}
+              {this.state.courseData.author.firstName +
+                " " +
+                this.state.courseData.author.lastName}
+            </h6>
           </MDBCol>
         </MDBRow>
 
         <hr />
         <h1>Description of the course</h1>
-        <ReactMarkDown>{this.state.courseData.description}</ReactMarkDown>
-
+        <ReactMarkDown
+          source={this.state.courseData.description}
+          escapeHtml={false}
+        />
         <hr />
 
         <h1>Lectures</h1>
@@ -150,6 +265,8 @@ class CourseContainer extends Component {
               </React.Fragment>
             );
           })}
+
+        {rateModal}
       </div>
     );
   }

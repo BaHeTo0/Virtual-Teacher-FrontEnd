@@ -4,6 +4,7 @@ import { MDBContainer, MDBCol, MDBRow, MDBBtn, MDBBtnGroup } from "mdbreact";
 import TeacherRequestsComponent from "../../components/TeacherRequestsComponent/TeacherRequestsComponent";
 import UserManagerComponent from "../../components/UserManagerComponent/UserManagerComponent";
 import axios from "axios"
+import "./AdminPanelContainer.css"
 
 class AdminPanelContainer extends React.Component {
     constructor(props) {

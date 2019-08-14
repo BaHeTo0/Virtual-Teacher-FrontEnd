@@ -11,11 +11,19 @@ class CourseListComponent extends Component {
 
   render() {
     let courses = null;
+
+    let submitted;
+    let submittedRow;
     if (this.props.courses !== null && this.props.courses !== []) {
       courses = this.props.courses.map(element => {
         let url = element.submitted
           ? "/course/" + element.id
           : "/edit/" + element.id;
+
+        if (this.props.authInfo.Teacher === true) {
+          submitted = <td>{element.submitted ? "Yes" : "No"}</td>;
+          submittedRow = <th>Submitted</th>;
+        }
         return (
           <tr key={element.id}>
             <td>{element.name}</td>
@@ -27,7 +35,8 @@ class CourseListComponent extends Component {
                 Go to course
               </MDBBtn>
             </td>
-            <td>{element.submitted?"Yes":"No"}</td>
+
+            {submitted}
           </tr>
         );
       });
@@ -52,7 +61,7 @@ class CourseListComponent extends Component {
               <th>Rating</th>
               <th>Author</th>
               <th>Link</th>
-              <th>Submitted</th>
+              {submittedRow}
             </tr>
           </MDBTableHead>
           <MDBTableBody>{courses}</MDBTableBody>
