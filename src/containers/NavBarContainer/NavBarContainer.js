@@ -68,7 +68,6 @@ class NavBarContainer extends Component {
       });
   };
 
-
   toggleCollapse = () => {
     this.setState({ isOpen: !this.state.isOpen });
   };
@@ -89,8 +88,9 @@ class NavBarContainer extends Component {
 
   searchHandler = event => {
     event.preventDefault();
-    if (this.state.searchField === "") return;
-    let redirectUrl = "/search/?searchField=" + this.state.searchField;
+    if (this.state.searchField === "" || this.state.searchField.length < 3)
+      return;
+    let redirectUrl = "/search/?q=" + this.state.searchField;
     this.props.history.push(redirectUrl);
   };
 
