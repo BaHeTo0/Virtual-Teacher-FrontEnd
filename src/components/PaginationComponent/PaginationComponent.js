@@ -13,8 +13,8 @@ class PaginationComponent extends Component {
 
     for (let i = 1; i <= this.props.pageCount; i++) {
       pageItems.push(
-        <MDBPageItem  key={i} active={i === this.props.activePage}>
-          <MDBPageNav onClick={()=> this.props.onClick(i)} >{i}</MDBPageNav>
+        <MDBPageItem key={i} active={i === this.props.activePage}>
+          <MDBPageNav onClick={() => this.props.onClick(i)}>{i}</MDBPageNav>
         </MDBPageItem>
       );
     }

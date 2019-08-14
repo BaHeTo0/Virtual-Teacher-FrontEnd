@@ -38,7 +38,7 @@ class LoginModalComponent extends Component {
         response.data.roles.forEach(element => {
           this.props.authHandler(element.name, true);
         });
-        this.setState({ badAuth: false });
+        this.setState({ badAuth: false, email: "", password: "" });
         this.props.toggleModal();
       })
       .catch(error => {
