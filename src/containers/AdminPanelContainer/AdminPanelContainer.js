@@ -12,8 +12,7 @@ class AdminPanelContainer extends React.Component {
     this.state = {
       teacherRequests: [],
       users: [],
-      rightSideOption: 0,
-      profile: null
+      rightSideOption: 0
     };
   }
 
@@ -24,7 +23,10 @@ class AdminPanelContainer extends React.Component {
   };
 
   render() {
-    if (this.props.authInfo.Admin !== true) {
+    if (
+      this.props.authInfo.Admin !== true &&
+      this.props.authInfo.Admin !== "true"
+    ) {
       return <Redirect to="/404" />;
     }
 
@@ -34,7 +36,6 @@ class AdminPanelContainer extends React.Component {
       case 0:
         rightSide = (
           <TeacherRequestsComponent
-            profile={this.state.profile}
             authInfo={this.props.authInfo}
             authHandler={this.props.authHandler}
             logoutHandler={this.props.logoutHandler}
@@ -44,7 +45,6 @@ class AdminPanelContainer extends React.Component {
       case 1:
         rightSide = (
           <UserManagerComponent
-            profile={this.state.profile}
             authInfo={this.props.authInfo}
             authHandler={this.props.authHandler}
             logoutHandler={this.props.logoutHandler}
@@ -54,7 +54,6 @@ class AdminPanelContainer extends React.Component {
       default:
         rightSide = (
           <TeacherRequestsComponent
-            profile={this.state.profile}
             authInfo={this.props.authInfo}
             authHandler={this.props.authHandler}
             logoutHandler={this.props.logoutHandler}

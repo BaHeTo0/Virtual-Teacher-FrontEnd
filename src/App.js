@@ -16,6 +16,7 @@ import CourseEditContainer from "./containers/CourseEditContainer/CourseEditCont
 import AdminPanelContainer from "./containers/AdminPanelContainer/AdminPanelContainer";
 import SearchResultsContainer from "./containers/SearchResultsCountainer/SearchResultsContainer";
 import CourseTopicContainer from "./containers/CourseTopicContainer/CourseTopicContainer";
+import TeacherPanelContainer from "./containers/TeacherPanelContainer/TeacherPanelContainer";
 
 class App extends Component {
   constructor(props) {
@@ -153,6 +154,13 @@ class App extends Component {
               path="/admin"
               render={routeProps => (
                 <AdminPanelContainer {...routeProps} authInfo={this.state} />
+              )}
+            />
+
+            <Route
+              path="/teacher"
+              render={routeProps => (
+                <TeacherPanelContainer {...routeProps} authInfo={this.state} />
               )}
             />
 
